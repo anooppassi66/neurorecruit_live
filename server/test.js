@@ -17,7 +17,7 @@ setTimeout(async () => {
   try {
     // Test register
     console.log('Testing register...');
-    const registerResponse = await axios.post('http://localhost:5001/api/auth/register', {
+    const registerResponse = await axios.post('https://backend.neurocruit.ai/api/auth/register', {
       name: 'Test User',
       email: 'test2@example.com',
       password: 'password123'
@@ -26,7 +26,7 @@ setTimeout(async () => {
 
     // Test login
     console.log('Testing login...');
-    const loginResponse = await axios.post('http://localhost:5001/api/auth/login', {
+    const loginResponse = await axios.post('https://backend.neurocruit.ai/api/auth/login', {
       email: 'test2@example.com',
       password: 'password123'
     });
@@ -36,14 +36,14 @@ setTimeout(async () => {
 
     // Test get profile
     console.log('Testing get profile...');
-    const profileResponse = await axios.get('http://localhost:5001/api/profile', {
+    const profileResponse = await axios.get('https://backend.neurocruit.ai/api/profile', {
       headers: { Authorization: `Bearer ${token}` }
     });
     console.log('Profile response:', profileResponse.data);
 
     // Test update profile
     console.log('Testing update profile...');
-    const updateResponse = await axios.put('http://localhost:5001/api/profile', {
+    const updateResponse = await axios.put('https://backend.neurocruit.ai/api/profile', {
       fullName: 'Updated Test User',
       headline: 'Test Developer',
       location: 'Test City'

@@ -36,7 +36,7 @@ export default function JoinNowPage() {
     setError('')
 
     try {
-      const data = await apiFetch<any>('http://localhost:5001/api/auth/login', {
+      const data = await apiFetch<any>('https://backend.neurocruit.ai/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginData)
@@ -64,7 +64,7 @@ export default function JoinNowPage() {
     }
 
     try {
-      const data = await apiFetch<any>('http://localhost:5001/api/auth/register', {
+      const data = await apiFetch<any>('https://backend.neurocruit.ai/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
