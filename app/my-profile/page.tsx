@@ -66,7 +66,7 @@ export default function MyProfilePage() {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem('token')
-      const data = await apiFetch<any>('https://backend.neurocruit.ai/api/profile', {
+      const data = await apiFetch<any>('http://localhost:5001/api/profile', {
         headers: { Authorization: `Bearer ${token}` }
       }, { showSuccess: false, toastId: 'profile:get' })
       setProfile(data)
@@ -86,7 +86,7 @@ export default function MyProfilePage() {
   const updateProfile = async (updates: any) => {
     try {
       const token = localStorage.getItem('token')
-      const data = await apiFetch<any>('https://backend.neurocruit.ai/api/profile', {
+      const data = await apiFetch<any>('http://localhost:5001/api/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

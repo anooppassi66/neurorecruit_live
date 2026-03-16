@@ -18,7 +18,7 @@ export default function CTASection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Link href="/coming-soon">
+           <Link href="/join-now">
             <Button className="w-full text-indigo-600 hover:bg-emerald-700 text-white py-6 text-lg font-semibold transition-all hover:shadow-lg hover:shadow-emerald-600/30">
               Join as New Hire
             </Button>
