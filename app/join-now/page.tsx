@@ -136,7 +136,7 @@ export default function JoinNowPage() {
               <TabsContent value="login" className="space-y-6">
                 {error && <div className="text-red-600 text-sm">{error}</div>}
 
-                <div className="space-y-3">
+                {/* <div className="space-y-3">
                   <Button
                     variant="outline"
                     className="flex w-full items-center justify-center gap-2 border-slate-200"
@@ -151,13 +151,13 @@ export default function JoinNowPage() {
                     <Facebook className="h-4 w-4 text-blue-600" />
                     Continue with Facebook
                   </Button>
-                </div>
+                </div> */}
 
-                <div className="flex items-center gap-3 text-xs text-slate-400">
+                {/* <div className="flex items-center gap-3 text-xs text-slate-400">
                   <span className="h-px flex-1 bg-slate-200" />
                   <span>OR</span>
                   <span className="h-px flex-1 bg-slate-200" />
-                </div>
+                </div> */}
 
                 <form
                   className="space-y-4"
