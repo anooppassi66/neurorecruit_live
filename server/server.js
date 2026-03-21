@@ -7,6 +7,8 @@ const profileRoutes = require('./routes/profile');
 
 dotenv.config();
 
+console.log('AWS_ACCESS_KEY_ID', process.env.AWS_ACCESS_KEY_ID);
+
 const app = express();
 const PORT = process.env.PORT || 5001;
 
