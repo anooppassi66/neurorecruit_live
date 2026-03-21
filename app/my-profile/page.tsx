@@ -689,10 +689,11 @@ export default function MyProfilePage() {
                             </a>
                           </Button>
                         ) : null}
-                        <Button variant="outline" size="sm" className="w-full gap-2 text-red-600 hover:text-red-700 hover:bg-red-50" onClick={handleDeleteResume}>
+                      
+                      </div>
+                       <Button variant="outline" size="sm" className="w-full gap-2 text-red-600 hover:text-red-700 hover:bg-red-50" onClick={handleDeleteResume}>
                           <Trash2 className="h-4 w-4" /> Delete
                         </Button>
-                      </div>
                       <Button variant="ghost" size="sm" className="w-full border border-indigo-100 text-indigo-600" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
                         {isUploading ? "Uploading..." : "Update Resume"}
                       </Button>
