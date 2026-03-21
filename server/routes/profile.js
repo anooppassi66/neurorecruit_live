@@ -5,6 +5,8 @@ const Profile = require('../models/Profile');
 const auth = require('../middleware/auth');
 const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const multerS3 = require('multer-s3');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const router = express.Router();
 
