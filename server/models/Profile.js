@@ -70,6 +70,7 @@ const profileSchema = new mongoose.Schema({
     originalName: { type: String },
     mimetype: { type: String },
     size: { type: Number },
+    url: { type: String },
     uploadDate: { type: Date, default: Date.now }
   },
 
