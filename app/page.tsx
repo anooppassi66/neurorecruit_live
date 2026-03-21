@@ -21,7 +21,7 @@ export default function Home() {
       <FeaturesSection />
       <StatsSection />
       <ResourceCategories />
-      <TestimonialSection />
+      {/* <TestimonialSection /> */}
       <CTASection />
       <Footer />
     </main>

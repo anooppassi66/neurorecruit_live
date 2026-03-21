@@ -6,12 +6,12 @@ export default function TestimonialSection() {
   return (
     <section className="py-20 md:py-22 bg-gradient-to-b from-gray-50 to-white " data-aos="fade-up">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* <div className="text-center mb-12 animate-fade-in-up">
+        <div className="text-center mb-12 animate-fade-in-up">
           <p className="text-gray-600 text-sm mb-2 font-medium">TRUSTED BY INDUSTRY LEADERS</p>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
             <span className="text-indigo-600">56% reduction</span> in new hire turnover
           </h2>
-        </div> */}
+        </div>
 
         {/* Testimonial Card */}
         <div className="bg-white border border-gray-200 rounded-lg p-8 md:p-12 hover:border-emerald-600/50 hover:shadow-lg transition-all">
