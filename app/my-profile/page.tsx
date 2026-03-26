@@ -252,665 +252,665 @@ export default function MyProfilePage() {
       <Header />
       <main className="min-h-screen bg-slate-50 px-4 py-8 md:px-6 lg:px-8">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-        <section className="overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 to-blue-600 shadow-sm">
-          <div className="flex flex-col gap-6 px-6 py-6 md:flex-row md:items-center md:justify-between md:px-8 md:py-8">
-            <div className="flex flex-1 flex-col gap-4 md:flex-row md:items-center">
-              <div className="flex items-center gap-4">
-                <Avatar className="h-20 w-20 ring-4 ring-white/20">
-                  <AvatarImage src="/placeholder-user.jpg" alt={profile.fullName || "User"} />
-                  <AvatarFallback>{profile.fullName ? profile.fullName.split(' ').map((n: string) => n[0]).join('') : 'U'}</AvatarFallback>
-                </Avatar>
-                <div className="space-y-1 text-white">
-                  <h1 className="text-2xl font-semibold md:text-3xl">{profile.fullName || 'Your Name'}</h1>
-                  <p className="text-sm md:text-base text-indigo-100">{profile.headline || 'Your Headline'}</p>
-                  <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm text-indigo-100/90">
-                    <span className="inline-flex items-center gap-1.5">
-                      <MapPin className="h-4 w-4" />
-                      {profile.location || 'Your Location'}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <Mail className="h-4 w-4" />
-                      {profile.email || 'your.email@example.com'}
-                    </span>
-                    {profile.phone && (
+          <section className="overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 to-blue-600 shadow-sm">
+            <div className="flex flex-col gap-6 px-6 py-6 md:flex-row md:items-center md:justify-between md:px-8 md:py-8">
+              <div className="flex flex-1 flex-col gap-4 md:flex-row md:items-center">
+                <div className="flex items-center gap-4">
+                  <Avatar className="h-20 w-20 ring-4 ring-white/20">
+                    <AvatarImage src="/placeholder-user.jpg" alt={profile.fullName || "User"} />
+                    <AvatarFallback>{profile.fullName ? profile.fullName.split(' ').map((n: string) => n[0]).join('') : 'U'}</AvatarFallback>
+                  </Avatar>
+                  <div className="space-y-1 text-white">
+                    <h1 className="text-2xl font-semibold md:text-3xl">{profile.fullName || 'Your Name'}</h1>
+                    <p className="text-sm md:text-base text-indigo-100">{profile.headline || 'Your Headline'}</p>
+                    <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm text-indigo-100/90">
                       <span className="inline-flex items-center gap-1.5">
-                        <Phone className="h-4 w-4" />
-                        {profile.phone}
+                        <MapPin className="h-4 w-4" />
+                        {profile.location || 'Your Location'}
                       </span>
-                    )}
+                      <span className="inline-flex items-center gap-1.5">
+                        <Mail className="h-4 w-4" />
+                        {profile.email || 'your.email@example.com'}
+                      </span>
+                      {profile.phone && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <Phone className="h-4 w-4" />
+                          {profile.phone}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col items-start justify-between gap-4 md:items-end">
-              <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full border border-white/20">
-                <Switch 
-                  id="availability" 
-                  checked={availability}
-                  onCheckedChange={handleToggleAvailability}
-                  className="data-[state=checked]:bg-green-400 data-[state=unchecked]:bg-slate-300"
-                />
-                <Label htmlFor="availability" className="text-white text-sm font-medium cursor-pointer">
-                  {availability ? "Available for work" : "Not available"}
-                </Label>
-              </div>
-              <ActionDialogButton
-                label="Edit Profile"
-                title="Edit profile"
-                description="Update your main profile details."
-                className="inline-flex items-center gap-2 bg-white text-indigo-700 hover:bg-indigo-50"
-                icon={<Edit3 className="h-4 w-4" />}
-                onSave={(data) => updateProfile(data)}
-                initialData={{
-                  fullName: profile.fullName,
-                  headline: profile.headline,
-                  location: profile.location
-                }}
-              >
-                <EditProfileForm />
-              </ActionDialogButton>
-              <div className="flex flex-wrap gap-3 text-xs md:text-sm text-indigo-100/90">
-                <span>Passionate product designer with 8+ years of experience creating user-centred digital experiences.</span>
-              </div>
-              <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm text-indigo-100/90">
+              <div className="flex flex-col items-start justify-between gap-4 md:items-end">
+                <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full border border-white/20">
+                  <Switch
+                    id="availability"
+                    checked={availability}
+                    onCheckedChange={handleToggleAvailability}
+                    className="data-[state=checked]:bg-green-400 data-[state=unchecked]:bg-slate-300"
+                  />
+                  <Label htmlFor="availability" className="text-white text-sm font-medium cursor-pointer">
+                    {availability ? "Available" : "Not available"}
+                  </Label>
+                </div>
                 <ActionDialogButton
-                  label="LinkedIn"
-                  title="LinkedIn profile"
-                  description="Static example link for your LinkedIn profile."
-                  variant="outline"
-                  size="sm"
-                  className="rounded-full border-white/40 bg-white/10 px-3 py-1 text-xs text-indigo-50 hover:bg-white/20"
-                  icon={<Linkedin className="h-3.5 w-3.5" />}
+                  label="Edit Profile"
+                  title="Edit profile"
+                  description="Update your main profile details."
+                  className="inline-flex items-center gap-2 bg-white text-indigo-700 hover:bg-indigo-50"
+                  icon={<Edit3 className="h-4 w-4" />}
+                  onSave={(data) => updateProfile(data)}
+                  initialData={{
+                    fullName: profile.fullName,
+                    headline: profile.headline,
+                    location: profile.location
+                  }}
                 >
-                  <p className="text-sm text-slate-700">
-                    linkedin.com/in/sarahjohnson
-                  </p>
+                  <EditProfileForm />
                 </ActionDialogButton>
-                <ActionDialogButton
-                  label="Portfolio"
-                  title="Portfolio website"
-                  description="Static example link for your portfolio."
-                  variant="outline"
-                  size="sm"
-                  className="rounded-full border-white/40 bg-white/10 px-3 py-1 text-xs text-indigo-50 hover:bg-white/20"
-                  icon={<Globe className="h-3.5 w-3.5" />}
-                >
-                  <p className="text-sm text-slate-700">
-                    sarahjohnson.design
-                  </p>
-                </ActionDialogButton>
+                <div className="flex flex-wrap gap-3 text-xs md:text-sm text-indigo-100/90">
+                  <span>Passionate product designer with 8+ years of experience creating user-centred digital experiences.</span>
+                </div>
+                <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm text-indigo-100/90">
+                  <ActionDialogButton
+                    label="LinkedIn"
+                    title="LinkedIn profile"
+                    description="Static example link for your LinkedIn profile."
+                    variant="outline"
+                    size="sm"
+                    className="rounded-full border-white/40 bg-white/10 px-3 py-1 text-xs text-indigo-50 hover:bg-white/20"
+                    icon={<Linkedin className="h-3.5 w-3.5" />}
+                  >
+                    <p className="text-sm text-slate-700">
+                      linkedin.com/in/sarahjohnson
+                    </p>
+                  </ActionDialogButton>
+                  <ActionDialogButton
+                    label="Portfolio"
+                    title="Portfolio website"
+                    description="Static example link for your portfolio."
+                    variant="outline"
+                    size="sm"
+                    className="rounded-full border-white/40 bg-white/10 px-3 py-1 text-xs text-indigo-50 hover:bg-white/20"
+                    icon={<Globe className="h-3.5 w-3.5" />}
+                  >
+                    <p className="text-sm text-slate-700">
+                      sarahjohnson.design
+                    </p>
+                  </ActionDialogButton>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="grid w-full items-start gap-6 grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-          <div className="flex flex-col gap-6">
-            <Tabs defaultValue="overview" className="w-full rounded-2xl bg-transparent">
-              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white px-4 py-3 shadow-sm sm:px-6">
-                <TabsList className="bg-slate-100 text-slate-700">
-                  <TabsTrigger value="overview">Overview</TabsTrigger>
-                  <TabsTrigger value="experience">Experience</TabsTrigger>
-                  <TabsTrigger value="education">Education</TabsTrigger>
-                  <TabsTrigger value="projects">Projects</TabsTrigger>
-                </TabsList>
-              </div>
+          <section className="grid w-full items-start gap-6 grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+            <div className="flex flex-col gap-6">
+              <Tabs defaultValue="overview" className="w-full rounded-2xl bg-transparent">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 bg-white px-4 py-3 shadow-sm sm:px-6">
+                  <TabsList className="bg-slate-100 text-slate-700">
+                    <TabsTrigger value="overview">Overview</TabsTrigger>
+                    <TabsTrigger value="experience">Experience</TabsTrigger>
+                    <TabsTrigger value="education">Education</TabsTrigger>
+                    <TabsTrigger value="projects">Projects</TabsTrigger>
+                  </TabsList>
+                </div>
 
-              <TabsContent value="overview" className="mt-4 space-y-6">
-                <Card>
-                  <CardHeader className="border-b">
-                    <CardTitle>Personal Information</CardTitle>
-                    <CardAction>
-                      <ActionDialogButton
-                        label="Edit"
-                        title="Edit Personal Information"
-                        description="Update your personal details, contact information, and professional summary."
-                        variant="outline"
-                        size="sm"
-                        className="gap-2"
-                        icon={<Edit3 className="h-4 w-4" />}
-                        formType="personal"
-                        onSave={updateProfile}
-                        initialData={{
-                          fullName: profile.fullName,
-                          phone: profile.phone,
-                          location: profile.location,
-                          linkedin: profile.linkedin,
-                          email: profile.email,
-                          dateOfBirth: profile.dateOfBirth,
-                          nationality: profile.nationality,
-                          portfolio: profile.portfolio,
-                          professionalSummary: profile.professionalSummary
-                        }}
-                      />
-                    </CardAction>
-                    <CardDescription>
-                      Key details recruiters use to understand your background.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="grid gap-6 md:grid-cols-2">
-                      <dl className="space-y-3 text-sm">
-                        <div className="flex items-start justify-between gap-4">
-                          <dt className="text-slate-500">Full Name</dt>
-                          <dd className="font-medium text-slate-900">{profile.fullName || 'Not provided'}</dd>
-                        </div>
-                        <div className="flex items-start justify-between gap-4">
-                          <dt className="text-slate-500">Phone</dt>
-                          <dd className="font-medium text-slate-900">{profile.phone || 'Not provided'}</dd>
-                        </div>
-                        <div className="flex items-start justify-between gap-4">
-                          <dt className="text-slate-500">Location</dt>
-                          <dd className="font-medium text-slate-900">{profile.location || 'Not provided'}</dd>
-                        </div>
-                        <div className="flex items-start justify-between gap-4">
-                          <dt className="text-slate-500">LinkedIn</dt>
-                          <dd className="font-medium text-indigo-600">{profile.linkedin || 'Not provided'}</dd>
-                        </div>
-                      </dl>
-                      <dl className="space-y-3 text-sm">
-                        <div className="flex items-start justify-between gap-4">
-                          <dt className="text-slate-500">Email</dt>
-                          <dd className="font-medium text-slate-900">{profile.email || 'Not provided'}</dd>
-                        </div>
-                        <div className="flex items-start justify-between gap-4">
-                          <dt className="text-slate-500">Date of Birth</dt>
-                          <dd className="font-medium text-slate-900">{profile.dateOfBirth ? new Date(profile.dateOfBirth).toLocaleDateString() : 'Not provided'}</dd>
-                        </div>
-                        <div className="flex items-start justify-between gap-4">
-                          <dt className="text-slate-500">Nationality</dt>
-                          <dd className="font-medium text-slate-900">{profile.nationality || 'Not provided'}</dd>
-                        </div>
-                        <div className="flex items-start justify-between gap-4">
-                          <dt className="text-slate-500">Portfolio</dt>
-                          <dd className="font-medium text-indigo-600">{profile.portfolio || 'Not provided'}</dd>
-                        </div>
-                      </dl>
-                    </div>
-
-                    <Separator className="my-6" />
-
-                    <div className="grid gap-6 md:grid-cols-[minmax(0,2fr),minmax(0,1fr)]">
-                      <div className="space-y-3">
-                        <h3 className="text-sm font-semibold text-slate-900">
-                          Professional Summary
-                        </h3>
-                        <p className="text-sm text-slate-600 leading-relaxed">
-                          {profile.professionalSummary || 'No professional summary provided yet.'}
-                        </p>
+                <TabsContent value="overview" className="mt-4 space-y-6">
+                  <Card>
+                    <CardHeader className="border-b">
+                      <CardTitle>Personal Information</CardTitle>
+                      <CardAction>
+                        <ActionDialogButton
+                          label="Edit"
+                          title="Edit Personal Information"
+                          description="Update your personal details, contact information, and professional summary."
+                          variant="outline"
+                          size="sm"
+                          className="gap-2"
+                          icon={<Edit3 className="h-4 w-4" />}
+                          formType="personal"
+                          onSave={updateProfile}
+                          initialData={{
+                            fullName: profile.fullName,
+                            phone: profile.phone,
+                            location: profile.location,
+                            linkedin: profile.linkedin,
+                            email: profile.email,
+                            dateOfBirth: profile.dateOfBirth,
+                            nationality: profile.nationality,
+                            portfolio: profile.portfolio,
+                            professionalSummary: profile.professionalSummary
+                          }}
+                        />
+                      </CardAction>
+                      <CardDescription>
+                        Key details recruiters use to understand your background.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      <div className="grid gap-6 md:grid-cols-2">
+                        <dl className="space-y-3 text-sm">
+                          <div className="flex items-start justify-between gap-4">
+                            <dt className="text-slate-500">Full Name</dt>
+                            <dd className="font-medium text-slate-900">{profile.fullName || 'Not provided'}</dd>
+                          </div>
+                          <div className="flex items-start justify-between gap-4">
+                            <dt className="text-slate-500">Phone</dt>
+                            <dd className="font-medium text-slate-900">{profile.phone || 'Not provided'}</dd>
+                          </div>
+                          <div className="flex items-start justify-between gap-4">
+                            <dt className="text-slate-500">Location</dt>
+                            <dd className="font-medium text-slate-900">{profile.location || 'Not provided'}</dd>
+                          </div>
+                          <div className="flex items-start justify-between gap-4">
+                            <dt className="text-slate-500">LinkedIn</dt>
+                            <dd className="font-medium text-indigo-600">{profile.linkedin || 'Not provided'}</dd>
+                          </div>
+                        </dl>
+                        <dl className="space-y-3 text-sm">
+                          <div className="flex items-start justify-between gap-4">
+                            <dt className="text-slate-500">Email</dt>
+                            <dd className="font-medium text-slate-900">{profile.email || 'Not provided'}</dd>
+                          </div>
+                          <div className="flex items-start justify-between gap-4">
+                            <dt className="text-slate-500">Date of Birth</dt>
+                            <dd className="font-medium text-slate-900">{profile.dateOfBirth ? new Date(profile.dateOfBirth).toLocaleDateString() : 'Not provided'}</dd>
+                          </div>
+                          <div className="flex items-start justify-between gap-4">
+                            <dt className="text-slate-500">Nationality</dt>
+                            <dd className="font-medium text-slate-900">{profile.nationality || 'Not provided'}</dd>
+                          </div>
+                          <div className="flex items-start justify-between gap-4">
+                            <dt className="text-slate-500">Portfolio</dt>
+                            <dd className="font-medium text-indigo-600">{profile.portfolio || 'Not provided'}</dd>
+                          </div>
+                        </dl>
                       </div>
+
+                      <Separator className="my-6" />
+
+                      <div className="grid gap-6 md:grid-cols-[minmax(0,2fr),minmax(0,1fr)]">
+                        <div className="space-y-3">
+                          <h3 className="text-sm font-semibold text-slate-900">
+                            Professional Summary
+                          </h3>
+                          <p className="text-sm text-slate-600 leading-relaxed">
+                            {profile.professionalSummary || 'No professional summary provided yet.'}
+                          </p>
+                        </div>
+                        <div className="space-y-3">
+                          <h3 className="text-sm font-semibold text-slate-900">Languages</h3>
+                          <div className="flex flex-wrap gap-2">
+                            {profile.languages && profile.languages.length > 0 ? (
+                              profile.languages.map((lang: any, index: number) => (
+                                <Badge key={index} variant="outline">
+                                  {lang.language} · {lang.proficiency}
+                                </Badge>
+                              ))
+                            ) : (
+                              <Badge variant="outline">No languages specified</Badge>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="border-b">
+                      <CardTitle>Skills &amp; Expertise</CardTitle>
+                      <CardAction>
+                        <ActionDialogButton
+                          label="Edit Skills"
+                          title="Edit Skills & Expertise"
+                          description="Update your design tools, technical skills, and soft skills."
+                          variant="outline"
+                          size="sm"
+                          className="gap-2"
+                          icon={<Edit3 className="h-4 w-4" />}
+                          formType="skills"
+                          onSave={updateProfile}
+                          initialData={{
+                            designTools: profile.designTools,
+                            technicalSkills: profile.technicalSkills,
+                            softSkills: profile.softSkills
+                          }}
+                        />
+                      </CardAction>
+                      <CardDescription>
+                        Highlight your strongest tools, technologies, and soft skills.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6 space-y-6">
                       <div className="space-y-3">
-                        <h3 className="text-sm font-semibold text-slate-900">Languages</h3>
+                        <h3 className="text-sm font-semibold text-slate-900">Design Tools</h3>
                         <div className="flex flex-wrap gap-2">
-                          {profile.languages && profile.languages.length > 0 ? (
-                            profile.languages.map((lang: any, index: number) => (
-                              <Badge key={index} variant="outline">
-                                {lang.language} · {lang.proficiency}
-                              </Badge>
+                          {profile.designTools && profile.designTools.length > 0 ? (
+                            profile.designTools.map((tool: string, index: number) => (
+                              <Badge key={index} variant="secondary">{tool}</Badge>
                             ))
                           ) : (
-                            <Badge variant="outline">No languages specified</Badge>
+                            <Badge variant="secondary">No design tools specified</Badge>
                           )}
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                      <div className="space-y-3">
+                        <h3 className="text-sm font-semibold text-slate-900">Technical Skills</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {profile.technicalSkills && profile.technicalSkills.length > 0 ? (
+                            profile.technicalSkills.map((skill: string, index: number) => (
+                              <Badge key={index} variant="outline">{skill}</Badge>
+                            ))
+                          ) : (
+                            <Badge variant="outline">No technical skills specified</Badge>
+                          )}
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <h3 className="text-sm font-semibold text-slate-900">Soft Skills</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {profile.softSkills && profile.softSkills.length > 0 ? (
+                            profile.softSkills.map((skill: string, index: number) => (
+                              <Badge key={index} variant="outline">{skill}</Badge>
+                            ))
+                          ) : (
+                            <Badge variant="outline">No soft skills specified</Badge>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-                <Card>
-                  <CardHeader className="border-b">
-                    <CardTitle>Skills &amp; Expertise</CardTitle>
-                    <CardAction>
-                      <ActionDialogButton
-                        label="Edit Skills"
-                        title="Edit Skills & Expertise"
-                        description="Update your design tools, technical skills, and soft skills."
-                        variant="outline"
-                        size="sm"
-                        className="gap-2"
-                        icon={<Edit3 className="h-4 w-4" />}
-                        formType="skills"
-                        onSave={updateProfile}
-                        initialData={{
-                          designTools: profile.designTools,
-                          technicalSkills: profile.technicalSkills,
-                          softSkills: profile.softSkills
-                        }}
-                      />
-                    </CardAction>
-                    <CardDescription>
-                      Highlight your strongest tools, technologies, and soft skills.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-6 space-y-6">
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-semibold text-slate-900">Design Tools</h3>
+                  <Card>
+                    <CardHeader className="border-b">
+                      <CardTitle>Skills</CardTitle>
+                      <CardDescription>
+                        Skills from your profile.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6 space-y-4">
                       <div className="flex flex-wrap gap-2">
-                        {profile.designTools && profile.designTools.length > 0 ? (
-                          profile.designTools.map((tool: string, index: number) => (
-                            <Badge key={index} variant="secondary">{tool}</Badge>
-                          ))
-                        ) : (
-                          <Badge variant="secondary">No design tools specified</Badge>
-                        )}
+                        {(profile.technicalSkills || []).map((s: string) => (
+                          <Badge key={s} variant="outline">{s}</Badge>
+                        ))}
+                        {(profile.designTools || []).map((s: string) => (
+                          <Badge key={s} variant="secondary">{s}</Badge>
+                        ))}
+                        {(profile.softSkills || []).map((s: string) => (
+                          <Badge key={s} variant="default">{s}</Badge>
+                        ))}
                       </div>
-                    </div>
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-semibold text-slate-900">Technical Skills</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {profile.technicalSkills && profile.technicalSkills.length > 0 ? (
-                          profile.technicalSkills.map((skill: string, index: number) => (
-                            <Badge key={index} variant="outline">{skill}</Badge>
-                          ))
-                        ) : (
-                          <Badge variant="outline">No technical skills specified</Badge>
-                        )}
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-semibold text-slate-900">Soft Skills</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {profile.softSkills && profile.softSkills.length > 0 ? (
-                          profile.softSkills.map((skill: string, index: number) => (
-                            <Badge key={index} variant="outline">{skill}</Badge>
-                          ))
-                        ) : (
-                          <Badge variant="outline">No soft skills specified</Badge>
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
 
-                <Card>
-                  <CardHeader className="border-b">
-                  <CardTitle>Skills</CardTitle>
-                    <CardDescription>
-                    Skills from your profile.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-6 space-y-4">
-                  <div className="flex flex-wrap gap-2">
-                    {(profile.technicalSkills || []).map((s: string) => (
-                      <Badge key={s} variant="outline">{s}</Badge>
-                    ))}
-                    {(profile.designTools || []).map((s: string) => (
-                      <Badge key={s} variant="secondary">{s}</Badge>
-                    ))}
-                    {(profile.softSkills || []).map((s: string) => (
-                      <Badge key={s} variant="default">{s}</Badge>
-                    ))}
-                  </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="experience" className="mt-4 space-y-6">
-                <Card>
-                  <CardHeader className="border-b">
-                    <CardTitle>Work Experience</CardTitle>
-                    <CardAction>
-                      <ActionDialogButton
-                        label="Add Experience"
-                        title="Add Work Experience"
-                        description="Add a new role to your professional experience."
-                        variant="outline"
-                        size="sm"
-                        className="gap-2"
-                        icon={<Plus className="h-4 w-4" />}
-                        formType="experience"
-                        onSave={updateProfile}
-                        initialData={{
-                          experience: profile.experience || []
-                        }}
-                      />
-                    </CardAction>
-                    <CardDescription>
-                      Showcase your most impactful roles and achievements.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-6 space-y-6">
-                    {profile.experience && profile.experience.length > 0 ? (
-                      profile.experience.map((exp: any, index: number) => (
-                        <Fragment key={index}>
-                          <ExperienceItem
-                            role={exp.role}
-                            company={exp.company}
-                            location={exp.location}
-                            duration={exp.duration}
-                            summary={exp.summary}
-                            achievements={exp.achievements || []}
-                            onEdit={() => {
-                              // For now, we'll use the add experience form to edit
-                              // In a full implementation, you'd want a separate edit form
-                              setEditingExperience({ ...exp, index })
-                            }}
-                          />
-                          {index < profile.experience.length - 1 && <Separator />}
-                        </Fragment>
-                      ))
-                    ) : (
-                      <div className="text-center py-8 text-slate-500">
-                        <p>No work experience added yet.</p>
-                        <p className="text-sm">Click "Add Experience" to get started.</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="education" className="mt-4 space-y-6">
-                <Card>
-                  <CardHeader className="border-b">
-                    <CardTitle>Education</CardTitle>
-                    <CardAction>
-                      <ActionDialogButton
-                        label="Add Education"
-                        title="Add Education"
-                        description="Add a new education entry to your profile."
-                        variant="outline"
-                        size="sm"
-                        className="gap-2"
-                        icon={<Plus className="h-4 w-4" />}
-                        formType="education"
-                        onSave={updateProfile}
-                        initialData={{
-                          education: profile.education || []
-                        }}
-                      />
-                    </CardAction>
-                    <CardDescription>
-                      Academic background and professional certifications.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-6 space-y-6">
-                    {profile.education && profile.education.length > 0 ? (
-                      profile.education.map((edu: any, index: number) => (
-                        <EducationItem
-                          key={index}
-                          degree={edu.degree}
-                          institution={edu.institution}
-                          duration={edu.duration}
-                          gpa={edu.gpa}
-                          coursework={edu.coursework}
-                          onEdit={() => {
-                            // For now, we'll use the add education form to edit
-                            // In a full implementation, you'd want a separate edit form
-                            setEditingEducation({ ...edu, index })
+                <TabsContent value="experience" className="mt-4 space-y-6">
+                  <Card>
+                    <CardHeader className="border-b">
+                      <CardTitle>Work Experience</CardTitle>
+                      <CardAction>
+                        <ActionDialogButton
+                          label="Add Experience"
+                          title="Add Work Experience"
+                          description="Add a new role to your professional experience."
+                          variant="outline"
+                          size="sm"
+                          className="gap-2"
+                          icon={<Plus className="h-4 w-4" />}
+                          formType="experience"
+                          onSave={updateProfile}
+                          initialData={{
+                            experience: profile.experience || []
                           }}
                         />
-                      ))
-                    ) : (
-                      <div className="text-center py-8 text-slate-500">
-                        <p>No education added yet.</p>
-                        <p className="text-sm">Click "Add Education" to get started.</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="projects" className="mt-4 space-y-6">
-                <Card>
-                  <CardHeader className="border-b">
-                    <CardTitle>Projects &amp; Portfolio</CardTitle>
-                    <CardAction>
-                      <ActionDialogButton
-                        label="Add Project"
-                        title="Add Project"
-                        description="Add a new project to your portfolio."
-                        variant="outline"
-                        size="sm"
-                        className="gap-2"
-                        icon={<Plus className="h-4 w-4" />}
-                        formType="projects"
-                        onSave={updateProfile}
-                        initialData={{
-                          projects: profile.projects || []
-                        }}
-                      />
-                    </CardAction>
-                    <CardDescription>
-                      Highlight projects that best represent your skills and impact.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-6 space-y-6">
-                {profile.projects && profile.projects.length > 0 ? (
-                  profile.projects.map((proj: any, index: number) => (
-                    <Fragment key={index}>
-                      <ProjectItem
-                        title={proj.title}
-                        description={proj.description}
-                        tags={proj.tags || []}
-                      />
-                      {index < profile.projects.length - 1 && <Separator />}
-                    </Fragment>
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-slate-500">
-                    <p>No projects added yet.</p>
-                    <p className="text-sm">Click "Add Project" to add your work.</p>
-                  </div>
-                )}
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
-
-          <aside className="flex flex-col gap-6">
-            <Card>
-              <CardHeader className="border-b">
-                <CardTitle>Resume / CV</CardTitle>
-                <CardDescription>Upload your latest resume for recruiters to review.</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-6 space-y-6">
-                <input 
-                  type="file" 
-                  ref={fileInputRef} 
-                  className="hidden" 
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleResumeUpload}
-                />
-                {profile?.resume?.filename ? (
-                  <div className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
-                          <FileText className="h-5 w-5" />
+                      </CardAction>
+                      <CardDescription>
+                        Showcase your most impactful roles and achievements.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6 space-y-6">
+                      {profile.experience && profile.experience.length > 0 ? (
+                        profile.experience.map((exp: any, index: number) => (
+                          <Fragment key={index}>
+                            <ExperienceItem
+                              role={exp.role}
+                              company={exp.company}
+                              location={exp.location}
+                              duration={exp.duration}
+                              summary={exp.summary}
+                              achievements={exp.achievements || []}
+                              onEdit={() => {
+                                // For now, we'll use the add experience form to edit
+                                // In a full implementation, you'd want a separate edit form
+                                setEditingExperience({ ...exp, index })
+                              }}
+                            />
+                            {index < profile.experience.length - 1 && <Separator />}
+                          </Fragment>
+                        ))
+                      ) : (
+                        <div className="text-center py-8 text-slate-500">
+                          <p>No work experience added yet.</p>
+                          <p className="text-sm">Click "Add Experience" to get started.</p>
                         </div>
-                        <div>
-                          <p className="text-sm font-medium text-slate-900 line-clamp-1">{profile.resume.originalName || profile.resume.filename}</p>
-                          <p className="text-xs text-slate-500">
-                            {new Date(profile.resume.uploadDate).toLocaleDateString()} {profile.resume.size ? `• ${(profile.resume.size / 1024 / 1024).toFixed(2)} MB` : ''}
-                          </p>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="education" className="mt-4 space-y-6">
+                  <Card>
+                    <CardHeader className="border-b">
+                      <CardTitle>Education</CardTitle>
+                      <CardAction>
+                        <ActionDialogButton
+                          label="Add Education"
+                          title="Add Education"
+                          description="Add a new education entry to your profile."
+                          variant="outline"
+                          size="sm"
+                          className="gap-2"
+                          icon={<Plus className="h-4 w-4" />}
+                          formType="education"
+                          onSave={updateProfile}
+                          initialData={{
+                            education: profile.education || []
+                          }}
+                        />
+                      </CardAction>
+                      <CardDescription>
+                        Academic background and professional certifications.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6 space-y-6">
+                      {profile.education && profile.education.length > 0 ? (
+                        profile.education.map((edu: any, index: number) => (
+                          <EducationItem
+                            key={index}
+                            degree={edu.degree}
+                            institution={edu.institution}
+                            duration={edu.duration}
+                            gpa={edu.gpa}
+                            coursework={edu.coursework}
+                            onEdit={() => {
+                              // For now, we'll use the add education form to edit
+                              // In a full implementation, you'd want a separate edit form
+                              setEditingEducation({ ...edu, index })
+                            }}
+                          />
+                        ))
+                      ) : (
+                        <div className="text-center py-8 text-slate-500">
+                          <p>No education added yet.</p>
+                          <p className="text-sm">Click "Add Education" to get started.</p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent value="projects" className="mt-4 space-y-6">
+                  <Card>
+                    <CardHeader className="border-b">
+                      <CardTitle>Projects &amp; Portfolio</CardTitle>
+                      <CardAction>
+                        <ActionDialogButton
+                          label="Add Project"
+                          title="Add Project"
+                          description="Add a new project to your portfolio."
+                          variant="outline"
+                          size="sm"
+                          className="gap-2"
+                          icon={<Plus className="h-4 w-4" />}
+                          formType="projects"
+                          onSave={updateProfile}
+                          initialData={{
+                            projects: profile.projects || []
+                          }}
+                        />
+                      </CardAction>
+                      <CardDescription>
+                        Highlight projects that best represent your skills and impact.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-6 space-y-6">
+                      {profile.projects && profile.projects.length > 0 ? (
+                        profile.projects.map((proj: any, index: number) => (
+                          <Fragment key={index}>
+                            <ProjectItem
+                              title={proj.title}
+                              description={proj.description}
+                              tags={proj.tags || []}
+                            />
+                            {index < profile.projects.length - 1 && <Separator />}
+                          </Fragment>
+                        ))
+                      ) : (
+                        <div className="text-center py-8 text-slate-500">
+                          <p>No projects added yet.</p>
+                          <p className="text-sm">Click "Add Project" to add your work.</p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </div>
+
+            <aside className="flex flex-col gap-6">
+              <Card>
+                <CardHeader className="border-b">
+                  <CardTitle>Resume / CV</CardTitle>
+                  <CardDescription>Upload your latest resume for recruiters to review.</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-6">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleResumeUpload}
+                  />
+                  {profile?.resume?.filename ? (
+                    <div className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
+                            <FileText className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-slate-900 line-clamp-1">{profile.resume.originalName || profile.resume.filename}</p>
+                            <p className="text-xs text-slate-500">
+                              {new Date(profile.resume.uploadDate).toLocaleDateString()} {profile.resume.size ? `• ${(profile.resume.size / 1024 / 1024).toFixed(2)} MB` : ''}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex flex-col gap-2 w-full">
-                      <div className="flex items-center gap-2">
-                        {profile.resume.url ? (
-                          <Button variant="outline" size="sm" className="w-full gap-2" asChild>
-                            <a href={profile.resume.url} target="_blank" rel="noopener noreferrer">
-                              <Download className="h-4 w-4" /> Download
-                            </a>
-                          </Button>
-                        ) : null}
-                      
-                      </div>
-                       <Button variant="outline" size="sm" className="w-full gap-2 text-red-600 hover:text-red-700 hover:bg-red-50" onClick={handleDeleteResume}>
+                      <div className="flex flex-col gap-2 w-full">
+                        <div className="flex items-center gap-2">
+                          {profile.resume.url ? (
+                            <Button variant="outline" size="sm" className="w-full gap-2" asChild>
+                              <a href={profile.resume.url} target="_blank" rel="noopener noreferrer">
+                                <Download className="h-4 w-4" /> Download
+                              </a>
+                            </Button>
+                          ) : null}
+
+                        </div>
+                        <Button variant="outline" size="sm" className="w-full gap-2 text-red-600 hover:text-red-700 hover:bg-red-50" onClick={handleDeleteResume}>
                           <Trash2 className="h-4 w-4" /> Delete
                         </Button>
-                      <Button variant="ghost" size="sm" className="w-full border border-indigo-100 text-indigo-600" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
-                        {isUploading ? "Uploading..." : "Update Resume"}
+                        <Button variant="ghost" size="sm" className="w-full border border-indigo-100 text-indigo-600" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+                          {isUploading ? "Uploading..." : "Update Resume"}
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => !isUploading && fileInputRef.current?.click()}
+                      className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center transition hover:border-indigo-400 hover:bg-indigo-50/40 ${isUploading ? "opacity-50 cursor-not-allowed" : ""}`}
+                    >
+                      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+                        <UploadIcon />
+                      </div>
+                      <p className="text-sm font-semibold text-slate-900">{isUploading ? "Uploading..." : "Upload your resume"}</p>
+                      <p className="text-xs text-slate-500">
+                        PDF, DOC, or DOCX only. Max size 10MB.
+                      </p>
+                      <Button size="sm" className="mt-4 bg-indigo-600 text-white hover:bg-indigo-700" disabled={isUploading}>
+                        Choose File
                       </Button>
                     </div>
+                  )}
+                  <div className="space-y-2 text-xs text-slate-600">
+                    <p className="font-semibold text-slate-900">Resume Tips</p>
+                    <ul className="space-y-1">
+                      <li>Keep it to 1–2 pages.</li>
+                      <li>Highlight achievements with metrics.</li>
+                      <li>Use keywords from job descriptions.</li>
+                      <li>Update regularly with new skills.</li>
+                    </ul>
                   </div>
-                ) : (
-                  <div 
-                    onClick={() => !isUploading && fileInputRef.current?.click()}
-                    className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center transition hover:border-indigo-400 hover:bg-indigo-50/40 ${isUploading ? "opacity-50 cursor-not-allowed" : ""}`}
-                  >
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
-                      <UploadIcon />
-                    </div>
-                    <p className="text-sm font-semibold text-slate-900">{isUploading ? "Uploading..." : "Upload your resume"}</p>
-                    <p className="text-xs text-slate-500">
-                      PDF, DOC, or DOCX only. Max size 10MB.
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="border-b">
+                  <CardTitle>Profile Strength</CardTitle>
+                  <CardDescription>Complete sections to improve your profile visibility.</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-4">
+                  {profile && (() => {
+                    const strength = calculateProfileStrength(profile);
+                    return (
+                      <>
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="text-sm font-medium text-slate-900">{strength.level}</p>
+                          <span className="text-xs text-slate-500">{strength.percentage}%</span>
+                        </div>
+                        <Progress value={strength.percentage} />
+                        <ul className="mt-4 space-y-2 text-xs text-slate-600 max-h-48 overflow-y-auto">
+                          {strength.completedItems.map((item, index) => (
+                            <li key={`completed-${index}`} className="flex items-center justify-between">
+                              <span className="flex items-center gap-2">
+                                <Check className="h-4 w-4 text-emerald-600" />
+                                {item}
+                              </span>
+                              <span className="text-emerald-600 font-semibold">Done</span>
+                            </li>
+                          ))}
+                          {strength.incompleteItems.map((item, index) => (
+                            <li key={`incomplete-${index}`} className="flex items-center justify-between">
+                              <span className="flex items-center gap-2 text-slate-400">
+                                <X className="h-4 w-4 text-slate-400" />
+                                {item}
+                              </span>
+                              <span className="text-slate-400 text-xs">Pending</span>
+                            </li>
+                          ))}
+                        </ul>
+                        <p className="text-xs text-slate-500 mt-2">
+                          {strength.completedItemsCount} of {strength.totalItems} sections complete
+                        </p>
+                      </>
+                    );
+                  })()}
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="border-b">
+                  <CardTitle>Job Preferences</CardTitle>
+                  <CardAction>
+                    <ActionDialogButton
+                      label="Edit"
+                      title="Edit Job Preferences"
+                      description="Update your job search preferences."
+                      variant="outline"
+                      size="sm"
+                      className="gap-2"
+                      icon={<Edit3 className="h-4 w-4" />}
+                      formType="jobPreferences"
+                      onSave={updateProfile}
+                      initialData={{
+                        jobPreferences: profile.jobPreferences || {}
+                      }}
+                    />
+                  </CardAction>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-4 text-sm text-slate-700">
+                  <div className="space-y-1">
+                    <p className="text-xs uppercase tracking-wide text-slate-500">
+                      Desired Role
                     </p>
-                    <Button size="sm" className="mt-4 bg-indigo-600 text-white hover:bg-indigo-700" disabled={isUploading}>
-                      Choose File
-                    </Button>
+                    <p>{profile.jobPreferences?.desiredRole || 'Not specified'}</p>
                   </div>
-                )}
-                <div className="space-y-2 text-xs text-slate-600">
-                  <p className="font-semibold text-slate-900">Resume Tips</p>
-                  <ul className="space-y-1">
-                    <li>Keep it to 1–2 pages.</li>
-                    <li>Highlight achievements with metrics.</li>
-                    <li>Use keywords from job descriptions.</li>
-                    <li>Update regularly with new skills.</li>
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="space-y-1">
+                    <p className="text-xs uppercase tracking-wide text-slate-500">
+                      Expected Salary
+                    </p>
+                    <p>{profile.jobPreferences?.expectedSalary || 'Not specified'}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs uppercase tracking-wide text-slate-500">
+                      Preferred Locations
+                    </p>
+                    <p>{profile.jobPreferences?.preferredLocations?.join(', ') || 'Not specified'}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs uppercase tracking-wide text-slate-500">
+                      Availability
+                    </p>
+                    <p>{profile.jobPreferences?.availability || 'Not specified'}</p>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <Card>
-              <CardHeader className="border-b">
-                <CardTitle>Profile Strength</CardTitle>
-                <CardDescription>Complete sections to improve your profile visibility.</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-6 space-y-4">
-                {profile && (() => {
-                  const strength = calculateProfileStrength(profile);
-                  return (
-                    <>
-                      <div className="flex items-center justify-between gap-2">
-                        <p className="text-sm font-medium text-slate-900">{strength.level}</p>
-                        <span className="text-xs text-slate-500">{strength.percentage}%</span>
-                      </div>
-                      <Progress value={strength.percentage} />
-                      <ul className="mt-4 space-y-2 text-xs text-slate-600 max-h-48 overflow-y-auto">
-                        {strength.completedItems.map((item, index) => (
-                          <li key={`completed-${index}`} className="flex items-center justify-between">
-                            <span className="flex items-center gap-2">
-                              <Check className="h-4 w-4 text-emerald-600" />
-                              {item}
-                            </span>
-                            <span className="text-emerald-600 font-semibold">Done</span>
-                          </li>
-                        ))}
-                        {strength.incompleteItems.map((item, index) => (
-                          <li key={`incomplete-${index}`} className="flex items-center justify-between">
-                            <span className="flex items-center gap-2 text-slate-400">
-                              <X className="h-4 w-4 text-slate-400" />
-                              {item}
-                            </span>
-                            <span className="text-slate-400 text-xs">Pending</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <p className="text-xs text-slate-500 mt-2">
-                        {strength.completedItemsCount} of {strength.totalItems} sections complete
-                      </p>
-                    </>
-                  );
-                })()}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="border-b">
-                <CardTitle>Job Preferences</CardTitle>
-                <CardAction>
+              <Card>
+                <CardHeader className="border-b">
+                  <CardTitle>Your Activity</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-3 text-sm text-slate-700">
+                  <div className="flex items-center justify-between">
+                    <span>Applications Sent</span>
+                    <span className="font-semibold text-slate-900">{profile.applicationsSent || 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Profile Views</span>
+                    <span className="font-semibold text-slate-900">{profile.profileViews || 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Interview Invites</span>
+                    <span className="font-semibold text-slate-900">{profile.interviewInvites || 0}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Saved Jobs</span>
+                    <span className="font-semibold text-slate-900">{profile.savedJobs || 0}</span>
+                  </div>
+                </CardContent>
+                <CardFooter className="border-t py-4">
                   <ActionDialogButton
-                    label="Edit"
-                    title="Edit Job Preferences"
-                    description="Update your job search preferences."
+                    label="View detailed activity"
+                    title="Activity details"
+                    description="Summary of your recent profile activity."
                     variant="outline"
-                    size="sm"
-                    className="gap-2"
-                    icon={<Edit3 className="h-4 w-4" />}
-                    formType="jobPreferences"
-                    onSave={updateProfile}
-                    initialData={{
-                      jobPreferences: profile.jobPreferences || {}
-                    }}
-                  />
-                </CardAction>
-              </CardHeader>
-              <CardContent className="pt-6 space-y-4 text-sm text-slate-700">
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-wide text-slate-500">
-                    Desired Role
-                  </p>
-                  <p>{profile.jobPreferences?.desiredRole || 'Not specified'}</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-wide text-slate-500">
-                    Expected Salary
-                  </p>
-                  <p>{profile.jobPreferences?.expectedSalary || 'Not specified'}</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-wide text-slate-500">
-                    Preferred Locations
-                  </p>
-                  <p>{profile.jobPreferences?.preferredLocations?.join(', ') || 'Not specified'}</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-wide text-slate-500">
-                    Availability
-                  </p>
-                  <p>{profile.jobPreferences?.availability || 'Not specified'}</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="border-b">
-                <CardTitle>Your Activity</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6 space-y-3 text-sm text-slate-700">
-                <div className="flex items-center justify-between">
-                  <span>Applications Sent</span>
-                  <span className="font-semibold text-slate-900">{profile.applicationsSent || 0}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Profile Views</span>
-                  <span className="font-semibold text-slate-900">{profile.profileViews || 0}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Interview Invites</span>
-                  <span className="font-semibold text-slate-900">{profile.interviewInvites || 0}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Saved Jobs</span>
-                  <span className="font-semibold text-slate-900">{profile.savedJobs || 0}</span>
-                </div>
-              </CardContent>
-              <CardFooter className="border-t py-4">
-                <ActionDialogButton
-                  label="View detailed activity"
-                  title="Activity details"
-                  description="Summary of your recent profile activity."
-                  variant="outline"
-                  className="w-full"
-                >
-                  <ul className="space-y-1 text-sm text-slate-700">
-                    <li>{profile.applicationsSent || 0} applications sent in the last 30 days.</li>
-                    <li>{profile.profileViews || 0} profile views from recruiters.</li>
-                    <li>{profile.interviewInvites || 0} interview invites received.</li>
-                    <li>{profile.savedJobs || 0} jobs saved for later review.</li>
-                  </ul>
-                </ActionDialogButton>
-              </CardFooter>
-            </Card>
-          </aside>
-        </section>
-      </div>
-    </main>
-  </>
+                    className="w-full"
+                  >
+                    <ul className="space-y-1 text-sm text-slate-700">
+                      <li>{profile.applicationsSent || 0} applications sent in the last 30 days.</li>
+                      <li>{profile.profileViews || 0} profile views from recruiters.</li>
+                      <li>{profile.interviewInvites || 0} interview invites received.</li>
+                      <li>{profile.savedJobs || 0} jobs saved for later review.</li>
+                    </ul>
+                  </ActionDialogButton>
+                </CardFooter>
+              </Card>
+            </aside>
+          </section>
+        </div>
+      </main>
+    </>
   )
 }
 
@@ -1120,7 +1120,7 @@ function EditPersonalInfoForm({ onSave, initialData }: { onSave?: (data: any) =>
         <Input
           id="fullName"
           value={formData.fullName}
-          onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
           placeholder="Enter your full name"
         />
       </div>
@@ -1129,7 +1129,7 @@ function EditPersonalInfoForm({ onSave, initialData }: { onSave?: (data: any) =>
         <Input
           id="phone"
           value={formData.phone}
-          onChange={(e) => setFormData({...formData, phone: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
           placeholder="+1 (555) 123-4567"
         />
       </div>
@@ -1138,7 +1138,7 @@ function EditPersonalInfoForm({ onSave, initialData }: { onSave?: (data: any) =>
         <Input
           id="location"
           value={formData.location}
-          onChange={(e) => setFormData({...formData, location: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, location: e.target.value })}
           placeholder="City, State, Country"
         />
       </div>
@@ -1147,7 +1147,7 @@ function EditPersonalInfoForm({ onSave, initialData }: { onSave?: (data: any) =>
         <Input
           id="linkedin"
           value={formData.linkedin}
-          onChange={(e) => setFormData({...formData, linkedin: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
           placeholder="linkedin.com/in/yourprofile"
         />
       </div>
@@ -1156,7 +1156,7 @@ function EditPersonalInfoForm({ onSave, initialData }: { onSave?: (data: any) =>
         <Input
           id="portfolio"
           value={formData.portfolio}
-          onChange={(e) => setFormData({...formData, portfolio: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, portfolio: e.target.value })}
           placeholder="yourwebsite.com"
         />
       </div>
@@ -1166,7 +1166,7 @@ function EditPersonalInfoForm({ onSave, initialData }: { onSave?: (data: any) =>
           id="dateOfBirth"
           type="date"
           value={formData.dateOfBirth}
-          onChange={(e) => setFormData({...formData, dateOfBirth: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
         />
       </div>
       <div className="grid gap-2">
@@ -1174,7 +1174,7 @@ function EditPersonalInfoForm({ onSave, initialData }: { onSave?: (data: any) =>
         <Input
           id="nationality"
           value={formData.nationality}
-          onChange={(e) => setFormData({...formData, nationality: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, nationality: e.target.value })}
           placeholder="Your nationality"
         />
       </div>
@@ -1183,7 +1183,7 @@ function EditPersonalInfoForm({ onSave, initialData }: { onSave?: (data: any) =>
         <Textarea
           id="professionalSummary"
           value={formData.professionalSummary}
-          onChange={(e) => setFormData({...formData, professionalSummary: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, professionalSummary: e.target.value })}
           placeholder="Brief description of your professional background..."
           rows={4}
         />
@@ -1433,7 +1433,7 @@ function EditExperienceForm({ onSave, initialData }: { onSave?: (data: any) => v
           <Input
             id="role"
             value={currentExp.role}
-            onChange={(e) => setCurrentExp({...currentExp, role: e.target.value})}
+            onChange={(e) => setCurrentExp({ ...currentExp, role: e.target.value })}
             placeholder="Job title"
           />
         </div>
@@ -1442,7 +1442,7 @@ function EditExperienceForm({ onSave, initialData }: { onSave?: (data: any) => v
           <Input
             id="company"
             value={currentExp.company}
-            onChange={(e) => setCurrentExp({...currentExp, company: e.target.value})}
+            onChange={(e) => setCurrentExp({ ...currentExp, company: e.target.value })}
             placeholder="Company name"
           />
         </div>
@@ -1451,7 +1451,7 @@ function EditExperienceForm({ onSave, initialData }: { onSave?: (data: any) => v
           <Input
             id="location"
             value={currentExp.location}
-            onChange={(e) => setCurrentExp({...currentExp, location: e.target.value})}
+            onChange={(e) => setCurrentExp({ ...currentExp, location: e.target.value })}
             placeholder="City, State"
           />
         </div>
@@ -1460,7 +1460,7 @@ function EditExperienceForm({ onSave, initialData }: { onSave?: (data: any) => v
           <Input
             id="duration"
             value={currentExp.duration}
-            onChange={(e) => setCurrentExp({...currentExp, duration: e.target.value})}
+            onChange={(e) => setCurrentExp({ ...currentExp, duration: e.target.value })}
             placeholder="Jan 2020 - Present"
           />
         </div>
@@ -1469,7 +1469,7 @@ function EditExperienceForm({ onSave, initialData }: { onSave?: (data: any) => v
           <Textarea
             id="summary"
             value={currentExp.summary}
-            onChange={(e) => setCurrentExp({...currentExp, summary: e.target.value})}
+            onChange={(e) => setCurrentExp({ ...currentExp, summary: e.target.value })}
             placeholder="Brief description of your role..."
             rows={3}
           />
@@ -1550,7 +1550,7 @@ function EditEducationForm({ onSave, initialData }: { onSave?: (data: any) => vo
           <Input
             id="degree"
             value={currentEdu.degree}
-            onChange={(e) => setCurrentEdu({...currentEdu, degree: e.target.value})}
+            onChange={(e) => setCurrentEdu({ ...currentEdu, degree: e.target.value })}
             placeholder="Bachelor of Science in Computer Science"
           />
         </div>
@@ -1559,7 +1559,7 @@ function EditEducationForm({ onSave, initialData }: { onSave?: (data: any) => vo
           <Input
             id="institution"
             value={currentEdu.institution}
-            onChange={(e) => setCurrentEdu({...currentEdu, institution: e.target.value})}
+            onChange={(e) => setCurrentEdu({ ...currentEdu, institution: e.target.value })}
             placeholder="University Name"
           />
         </div>
@@ -1568,7 +1568,7 @@ function EditEducationForm({ onSave, initialData }: { onSave?: (data: any) => vo
           <Input
             id="duration"
             value={currentEdu.duration}
-            onChange={(e) => setCurrentEdu({...currentEdu, duration: e.target.value})}
+            onChange={(e) => setCurrentEdu({ ...currentEdu, duration: e.target.value })}
             placeholder="2015 - 2019"
           />
         </div>
@@ -1577,7 +1577,7 @@ function EditEducationForm({ onSave, initialData }: { onSave?: (data: any) => vo
           <Input
             id="gpa"
             value={currentEdu.gpa}
-            onChange={(e) => setCurrentEdu({...currentEdu, gpa: e.target.value})}
+            onChange={(e) => setCurrentEdu({ ...currentEdu, gpa: e.target.value })}
             placeholder="3.8/4.0"
           />
         </div>
@@ -1586,7 +1586,7 @@ function EditEducationForm({ onSave, initialData }: { onSave?: (data: any) => vo
           <Textarea
             id="coursework"
             value={currentEdu.coursework}
-            onChange={(e) => setCurrentEdu({...currentEdu, coursework: e.target.value})}
+            onChange={(e) => setCurrentEdu({ ...currentEdu, coursework: e.target.value })}
             placeholder="Data Structures, Algorithms, Web Development..."
             rows={3}
           />
@@ -1690,7 +1690,7 @@ function EditProjectsForm({ onSave, initialData }: { onSave?: (data: any) => voi
           <Input
             id="title"
             value={currentProject.title}
-            onChange={(e) => setCurrentProject({...currentProject, title: e.target.value})}
+            onChange={(e) => setCurrentProject({ ...currentProject, title: e.target.value })}
             placeholder="Project name"
           />
         </div>
@@ -1699,7 +1699,7 @@ function EditProjectsForm({ onSave, initialData }: { onSave?: (data: any) => voi
           <Textarea
             id="description"
             value={currentProject.description}
-            onChange={(e) => setCurrentProject({...currentProject, description: e.target.value})}
+            onChange={(e) => setCurrentProject({ ...currentProject, description: e.target.value })}
             placeholder="Describe your project..."
             rows={3}
           />
@@ -1728,7 +1728,7 @@ function EditProjectsForm({ onSave, initialData }: { onSave?: (data: any) => voi
           <Input
             id="githubLink"
             value={currentProject.githubLink}
-            onChange={(e) => setCurrentProject({...currentProject, githubLink: e.target.value})}
+            onChange={(e) => setCurrentProject({ ...currentProject, githubLink: e.target.value })}
             placeholder="https://github.com/username/repo"
           />
         </div>
@@ -1737,7 +1737,7 @@ function EditProjectsForm({ onSave, initialData }: { onSave?: (data: any) => voi
           <Input
             id="liveLink"
             value={currentProject.liveLink}
-            onChange={(e) => setCurrentProject({...currentProject, liveLink: e.target.value})}
+            onChange={(e) => setCurrentProject({ ...currentProject, liveLink: e.target.value })}
             placeholder="https://yourproject.com"
           />
         </div>
@@ -1760,11 +1760,11 @@ function EditJobPreferencesForm({ onSave, initialData }: { onSave?: (data: any) 
   const base = initialData
     ? (initialData.jobPreferences ?? initialData)
     : {
-        desiredRole: '',
-        expectedSalary: '',
-        preferredLocations: [],
-        availability: ''
-      }
+      desiredRole: '',
+      expectedSalary: '',
+      preferredLocations: [],
+      availability: ''
+    }
   const [formData, setFormData] = useState({
     ...base,
     preferredLocations: Array.isArray(base.preferredLocations)
@@ -1802,7 +1802,7 @@ function EditJobPreferencesForm({ onSave, initialData }: { onSave?: (data: any) 
         <Input
           id="desiredRole"
           value={formData.desiredRole}
-          onChange={(e) => setFormData({...formData, desiredRole: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, desiredRole: e.target.value })}
           placeholder="e.g., Full-time, Remote"
         />
       </div>
@@ -1811,7 +1811,7 @@ function EditJobPreferencesForm({ onSave, initialData }: { onSave?: (data: any) 
         <Input
           id="expectedSalary"
           value={formData.expectedSalary}
-          onChange={(e) => setFormData({...formData, expectedSalary: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, expectedSalary: e.target.value })}
           placeholder="$120,000 - $150,000"
         />
       </div>
@@ -1836,7 +1836,7 @@ function EditJobPreferencesForm({ onSave, initialData }: { onSave?: (data: any) 
       </div>
       <div className="grid gap-2">
         <Label htmlFor="availability">Availability</Label>
-        <Select value={formData.availability} onValueChange={(value) => setFormData({...formData, availability: value})}>
+        <Select value={formData.availability} onValueChange={(value) => setFormData({ ...formData, availability: value })}>
           <SelectTrigger>
             <SelectValue placeholder="Select availability" />
           </SelectTrigger>
@@ -1877,7 +1877,7 @@ function EditProfileForm({ onSave, initialData }: { onSave?: (data: any) => void
         <Input
           id="fullName"
           value={formData.fullName}
-          onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
         />
       </div>
       <div className="grid gap-2">
@@ -1885,7 +1885,7 @@ function EditProfileForm({ onSave, initialData }: { onSave?: (data: any) => void
         <Input
           id="headline"
           value={formData.headline}
-          onChange={(e) => setFormData({...formData, headline: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, headline: e.target.value })}
         />
       </div>
       <div className="grid gap-2">
@@ -1893,7 +1893,7 @@ function EditProfileForm({ onSave, initialData }: { onSave?: (data: any) => void
         <Input
           id="location"
           value={formData.location}
-          onChange={(e) => setFormData({...formData, location: e.target.value})}
+          onChange={(e) => setFormData({ ...formData, location: e.target.value })}
         />
       </div>
       <DialogFooter>
