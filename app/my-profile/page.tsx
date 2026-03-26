@@ -30,6 +30,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 import Header from "@/components/header"
 import { Mail, MapPin, Phone, Globe, Linkedin, Edit3, Plus, Check, X, Trash2, FileText, Download } from "lucide-react"
 import { Fragment, useState, useEffect, useRef } from "react"
@@ -41,6 +42,7 @@ import { calculateProfileStrength } from "@/lib/profileStrength"
 
 export default function MyProfilePage() {
   const [profile, setProfile] = useState<any>(null)
+  const [availability, setAvailability] = useState<boolean>(true)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [authChecked, setAuthChecked] = useState(false)
@@ -61,6 +63,40 @@ export default function MyProfilePage() {
     }
     setAuthChecked(true)
     fetchProfile()
+    fetchUser()
+  }
+
+  const fetchUser = async () => {
+    try {
+      const token = tokenFromStore || localStorage.getItem('token')
+      const data = await apiFetch<any>('https://backend.neurocruit.ai/api/auth/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      }, { showSuccess: false })
+      if (data?.user) {
+        setAvailability(data.user.availability === 1)
+      }
+    } catch (err) {
+      console.error('Failed to fetch user state', err)
+    }
+  }
+
+  const handleToggleAvailability = async (checked: boolean) => {
+    const previous = availability
+    setAvailability(checked)
+    try {
+      const token = tokenFromStore || localStorage.getItem('token')
+      await apiFetch('https://backend.neurocruit.ai/api/auth/availability', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ availability: checked ? 1 : 0 })
+      }, { toastId: 'availability:update', showSuccess: false })
+    } catch (err) {
+      setAvailability(previous)
+      console.error('Failed to update availability', err)
+    }
   }
 
   const fetchProfile = async () => {
@@ -247,6 +283,17 @@ export default function MyProfilePage() {
               </div>
             </div>
             <div className="flex flex-col items-start justify-between gap-4 md:items-end">
+              <div className="flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full border border-white/20">
+                <Switch 
+                  id="availability" 
+                  checked={availability}
+                  onCheckedChange={handleToggleAvailability}
+                  className="data-[state=checked]:bg-green-400 data-[state=unchecked]:bg-slate-300"
+                />
+                <Label htmlFor="availability" className="text-white text-sm font-medium cursor-pointer">
+                  {availability ? "Available for work" : "Not available"}
+                </Label>
+              </div>
               <ActionDialogButton
                 label="Edit Profile"
                 title="Edit profile"

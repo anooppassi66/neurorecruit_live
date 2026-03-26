@@ -36,7 +36,7 @@ router.post('/register', async (req, res) => {
     res.status(201).json({
       message: 'User registered successfully',
       token,
-      user: { id: user._id, name: user.name, email: user.email }
+      user: { id: user._id, name: user.name, email: user.email, availability: user.availability }
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -70,7 +70,7 @@ router.post('/login', async (req, res) => {
     res.json({
       message: 'Login successful',
       token,
-      user: { id: user._id, name: user.name, email: user.email }
+      user: { id: user._id, name: user.name, email: user.email, availability: user.availability }
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -80,11 +80,49 @@ router.post('/login', async (req, res) => {
 // Get current user
 router.get('/me', auth, async (req, res) => {
   try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
     res.json({
       user: {
-        id: req.user._id,
-        name: req.user.name,
-        email: req.user.email
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        availability: user.availability
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Update availability
+router.put('/availability', auth, async (req, res) => {
+  try {
+    const { availability } = req.body;
+    
+    // ensure availability is a number (0 or 1)
+    const validAvailability = availability === 1 ? 1 : 0;
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { availability: validAvailability },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({
+      message: 'Availability updated successfully',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        availability: user.availability
       }
     });
   } catch (error) {
