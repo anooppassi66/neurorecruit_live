@@ -1,8 +1,0 @@
-{
-  "/_not-found/page": "app/_not-found/page.js",
-  "/join-now/page": "app/join-now/page.js",
-  "/coming-soon/page": "app/coming-soon/page.js",
-  "/page": "app/page.js",
-  "/my-profile/page": "app/my-profile/page.js",
-  "/recruiter-tool/page": "app/recruiter-tool/page.js"
-}
