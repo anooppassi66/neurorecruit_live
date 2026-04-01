@@ -297,7 +297,7 @@ export default function Home() {
             boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
           }}>
           <Link href="/" className="flex items-center gap-3 cursor-pointer">
-            <Image src="/neurocruit-logo-rectangle.jpg" alt="Neurocruit" width={250} height={300} className="rounded" />
+            <Image src="/neurocruit-logo-rectangle.jpg" alt="Neurocruit" width={250} height={10} className="rounded" />
             {/* <span className="text-xl font-bold tracking-tight" style={{ color: "#0F172A" }}>
               Neuro<span style={{ color: "#7C3AED" }}>cruit</span>
             </span> */}
