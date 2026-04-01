@@ -297,7 +297,7 @@ export default function Home() {
             boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
           }}>
           <Link href="/" className="flex items-center gap-3 cursor-pointer">
-            <Image src="/neurocruit_logo_rectangle.png" alt="Neurocruit" width={250} height={100} className="rounded" />
+            <Image src="/neurocruit_logo_rectangle.png" alt="Neurocruit" width={250} height={42} className="rounded" />
             {/* <span className="text-xl font-bold tracking-tight" style={{ color: "#0F172A" }}>
               Neuro<span style={{ color: "#7C3AED" }}>cruit</span>
             </span> */}
@@ -682,7 +682,7 @@ export default function Home() {
       <footer className="relative z-10 py-10 px-6" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
         <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <Image src="/neurocruit_logo_rectangle.png" alt="Neurocruit" width={250} height={100} className="rounded-sm" />
+            <Image src="/neurocruit_logo_rectangle.png" alt="Neurocruit" width={250} height={42} className="rounded-sm" />
             {/* <span className="text-sm font-semibold" style={{ color: "#0F172A" }}>
               Neuro<span style={{ color: "#7C3AED" }}>cruit</span>
             </span> */}
