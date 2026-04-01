@@ -682,7 +682,7 @@ export default function Home() {
       <footer className="relative z-10 py-10 px-6" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
         <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <Image src="/neurocruit-logo.jpg" alt="Neurocruit" width={100} height={100} className="rounded-sm" />
+            <Image src="/neurocruit-logo-rectangle.jpg" alt="Neurocruit" width={250} height={100} className="rounded-sm" />
             {/* <span className="text-sm font-semibold" style={{ color: "#0F172A" }}>
               Neuro<span style={{ color: "#7C3AED" }}>cruit</span>
             </span> */}
