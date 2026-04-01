@@ -32,6 +32,11 @@ export default function RootLayout({
           {children}
         </ReduxProvider>
         <Analytics />
+        <footer className="app-footer" style={{
+    textAlign: "center",
+    padding: "1rem 0",
+    fontSize: ".9rem"
+        }}><p>Made with ❤ By <a href="http://www.kkeydos.com" target="_blank" style={{ textDecoration: "underline" }}>KKEYDOS</a></p></footer>
       </body>
     </html>
   )

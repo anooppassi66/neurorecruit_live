@@ -92,7 +92,7 @@ export default function JoinNowPage() {
           <section className="flex flex-1 items-center justify-center bg-emerald-50 px-8 py-12">
             <div className="w-full max-w-md mx-auto space-y-5 text-slate-900">
               <Image
-                src="/neurocruit-logo.png"
+                src="/neurocruit-logo.jpg"
                 alt="NEUROCRUIT"
                 width={220}
                 height={120}

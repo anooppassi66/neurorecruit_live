@@ -297,7 +297,7 @@ export default function Home() {
             boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
           }}>
           <Link href="/" className="flex items-center gap-3 cursor-pointer">
-            <Image src="/neurocruit-logo.png" alt="Neurocruit" width={100} height={100} className="rounded" />
+            <Image src="/neurocruit-logo.jpg" alt="Neurocruit" width={70} height={70} className="rounded" />
             {/* <span className="text-xl font-bold tracking-tight" style={{ color: "#0F172A" }}>
               Neuro<span style={{ color: "#7C3AED" }}>cruit</span>
             </span> */}
@@ -492,7 +492,7 @@ export default function Home() {
         <div className="text-center mb-14" style={{ animation: "fade-in-up 0.7s ease-out 0.2s both" }}>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: "#059669" }}>Built for Both Sides</p>
           <h2 className="text-3xl md:text-5xl font-bold mb-5" style={{ color: "#0F172A" }}>
-            Students & Recruiters
+            Employees & Recruiters
           </h2>
         </div>
         <div className="grid md:grid-cols-2 gap-6" style={{ animation: "fade-in-up 0.7s ease-out 0.35s both" }}>
@@ -507,7 +507,7 @@ export default function Home() {
                 style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.12)" }}>
                 <GraduationCapIcon className="w-6 h-6" style={{ color: "#7C3AED" }} />
               </div>
-              <h3 className="text-xl font-semibold" style={{ color: "#0F172A" }}>For Students</h3>
+              <h3 className="text-xl font-semibold" style={{ color: "#0F172A" }}>For Employees</h3>
             </div>
             <ul className="space-y-3">
               {forStudents.map((point) => (
@@ -662,7 +662,7 @@ export default function Home() {
               Ready to Transform<br className="hidden md:block" /> Your Hiring?
             </h2>
             <p className="text-base md:text-lg mb-10 max-w-lg mx-auto" style={{ color: "#64748B" }}>
-              Join thousands of students and recruiters already using Neurocruit
+              Join thousands of employees and recruiters already using Neurocruit
               to make smarter, faster hiring decisions.
             </p>
             <Link href="/join-now"
@@ -682,7 +682,7 @@ export default function Home() {
       <footer className="relative z-10 py-10 px-6" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
         <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <Image src="/neurocruit-logo.png" alt="Neurocruit" width={100} height={100} className="rounded-sm" />
+            <Image src="/neurocruit-logo.jpg" alt="Neurocruit" width={100} height={100} className="rounded-sm" />
             {/* <span className="text-sm font-semibold" style={{ color: "#0F172A" }}>
               Neuro<span style={{ color: "#7C3AED" }}>cruit</span>
             </span> */}

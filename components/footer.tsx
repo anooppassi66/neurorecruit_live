@@ -15,7 +15,7 @@ export default function Footer() {
           <div>
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src="/neurocruit-logo.png"
+                src="/neurocruit-logo.jpg"
                 alt="NEUROCRUIT"
                 width={200}
                 height={140}
