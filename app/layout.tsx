@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <link rel="icon" type="image/x-icon" href=".../public/neuro_favicon.png"/>
+      <link rel="icon" type="image/x-icon" href="./neuro_favicon.png"/>
       <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         <ClientAOSProvider />
         <ReduxProvider>
