@@ -316,7 +316,7 @@ export default function Home() {
             <Link href="/join-now"
               className="px-5 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 hover:opacity-80"
               style={{ color: "#475569" }}>
-              Sign In
+              NewHire Login
             </Link>
             {/* <Link href="/join-now"
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white cursor-pointer transition-all duration-300 hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]"
@@ -378,9 +378,9 @@ export default function Home() {
               color: "#475569", background: "rgba(0,0,0,0.02)",
               border: "1px solid rgba(0,0,0,0.08)", backdropFilter: "blur(8px)",
             }}>
-            Sign In to Dashboard
+            NewHire Login
           </Link>
-          <Link href="https://recruit.neurocruit.ai/signup"
+          {/* <Link href="https://recruit.neurocruit.ai/signup"
             className="inline-flex items-center gap-2.5 px-9 py-4 rounded-2xl text-base font-medium cursor-pointer transition-all duration-300 hover:bg-amber-50"
             style={{
               color: "#D97706", background: "rgba(217,119,6,0.05)",
@@ -388,7 +388,7 @@ export default function Home() {
             }}>
             <BriefcaseIcon className="w-4 h-4" />
             Recruiters
-          </Link>
+          </Link> */}
         </div>
 
         <div className="flex items-center justify-center gap-6 flex-wrap">
