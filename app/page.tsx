@@ -306,26 +306,26 @@ export default function Home() {
             <Link href="https://recruit.neurocruit.ai/signup"
               className="px-5 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 hover:opacity-80"
               style={{ color: "#D97706" }}>
-              Recruiters
+              Recruiters Login
             </Link>
-            <Link href="https://recruit.neurocruit.ai/signup"
+            {/* <Link href="https://recruit.neurocruit.ai/signup"
               className="px-5 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 hover:opacity-80"
               style={{ color: "#059669" }}>
               New Hire
-            </Link>
+            </Link> */}
             <Link href="/join-now"
               className="px-5 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 hover:opacity-80"
               style={{ color: "#475569" }}>
               Sign In
             </Link>
-            <Link href="/join-now"
+            {/* <Link href="/join-now"
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white cursor-pointer transition-all duration-300 hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]"
               style={{
                 background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
                 boxShadow: "0 2px 12px rgba(124,58,237,0.25)",
               }}>
               Get Started
-            </Link>
+            </Link> */}
           </div>
         </div>
       </nav>
