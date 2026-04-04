@@ -158,7 +158,7 @@ const features = [
     icon: BrainCircuitIcon,
     title: "AI-Powered JD Analysis",
     description: "Powered by Claude AI, our engine reads your job description and automatically extracts skills, programming languages, experience requirements, and job titles.",
-    iconColor: "#7C3AED",
+    iconColor: "#155DD2",
     borderColor: "rgba(124, 58, 237, 0.15)",
   },
   {
@@ -211,7 +211,7 @@ const steps = [
     step: "01",
     title: "Paste Your Job Description",
     description: "Drop in any JD. Our AI engine powered by Claude reads the full context — understanding skills, languages, experience, and role nuances automatically.",
-    color: "#7C3AED",
+    color: "#155DD2",
   },
   {
     icon: SearchIcon,
@@ -230,7 +230,7 @@ const steps = [
 ];
 
 const aiExtractedTags = [
-  { label: "Job Title", example: "Senior Full Stack Developer", color: "#7C3AED" },
+  { label: "Job Title", example: "Senior Full Stack Developer", color: "#155DD2" },
   { label: "Skills", example: "React, Node.js, AWS, Docker, CI/CD", color: "#0891B2" },
   { label: "Languages", example: "JavaScript, Python, TypeScript", color: "#059669" },
   { label: "Experience", example: "5+ years", color: "#D97706" },
@@ -266,7 +266,7 @@ export default function Home() {
         <StarsBackground starDensity={0.0004} />
         <ShootingStars
           starColor="#1E293B"
-          trailColor="#7C3AED"
+          trailColor="#155DD2"
           minSpeed={15}
           maxSpeed={35}
           minDelay={2000}
@@ -290,7 +290,7 @@ export default function Home() {
       <nav className="sticky top-0 z-50 mx-auto max-w-6xl" style={{ animation: "fade-in 0.6s ease-out" }}>
         <div className="mx-4 mt-4 flex items-center justify-between rounded-2xl px-6 py-3.5"
           style={{
-            background: "rgba(255,255,255,0.8)",
+            background: "#155DD2",
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
             border: "1px solid rgba(0,0,0,0.06)",
@@ -299,13 +299,13 @@ export default function Home() {
           <Link href="/" className="flex items-center gap-3 cursor-pointer">
             <Image src="/neurocruit_logo_rectangle.png" alt="Neurocruit" width={250} height={42} className="rounded" />
             {/* <span className="text-xl font-bold tracking-tight" style={{ color: "#0F172A" }}>
-              Neuro<span style={{ color: "#7C3AED" }}>cruit</span>
+              Neuro<span style={{ color: "#155DD2" }}>cruit</span>
             </span> */}
           </Link>
           <div className="flex items-center gap-3">
             <Link href="https://recruit.neurocruit.ai/signup"
               className="px-5 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 hover:opacity-80"
-              style={{ color: "#D97706" }}>
+              style={{ color: "#fff" }}>
               Recruiters Login
             </Link>
             {/* <Link href="https://recruit.neurocruit.ai/signup"
@@ -315,13 +315,13 @@ export default function Home() {
             </Link> */}
             <Link href="/join-now"
               className="px-5 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 hover:opacity-80"
-              style={{ color: "#475569" }}>
+              style={{ color: "#fff" }}>
               NewHire Login
             </Link>
             {/* <Link href="/join-now"
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white cursor-pointer transition-all duration-300 hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]"
               style={{
-                background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
+                background: "linear-gradient(135deg, #155DD2, #155DD2)",
                 boxShadow: "0 2px 12px rgba(124,58,237,0.25)",
               }}>
               Get Started
@@ -337,7 +337,7 @@ export default function Home() {
         <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full mb-10 text-sm font-medium cursor-default"
           style={{
             background: "rgba(124,58,237,0.06)", border: "1px solid rgba(124,58,237,0.15)",
-            color: "#7C3AED", backdropFilter: "blur(8px)",
+            color: "#155DD2", backdropFilter: "blur(8px)",
           }}>
           <SparklesIcon className="w-4 h-4" />
           AI-Powered Talent Intelligence
@@ -347,11 +347,12 @@ export default function Home() {
           Connect Talent with
           <br />
           <span style={{
-            background: "linear-gradient(135deg, #7C3AED 0%, #6D28D9 40%, #0891B2 70%, #D97706 100%)",
+            background: "#155DD2",
             backgroundSize: "200% 200%",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             animation: "gradient-shift 6s ease infinite",
+            color: "#fff"
           }}>
             Opportunities
           </span>
@@ -366,7 +367,7 @@ export default function Home() {
           <Link href="https://recruit.neurocruit.ai/signup"
             className="group inline-flex items-center gap-2.5 px-9 py-4 rounded-2xl text-base font-semibold text-white cursor-pointer transition-all duration-300 hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] hover:-translate-y-0.5"
             style={{
-              background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
+              background: "linear-gradient(135deg, #155DD2, #155DD2)",
               boxShadow: "0 4px 20px rgba(124,58,237,0.3)",
             }}>
             Start Matching Free
@@ -422,7 +423,7 @@ export default function Home() {
       {/* ─── Features ─── */}
       <section className="relative z-10 mx-auto max-w-6xl px-6 pb-28">
         <div className="text-center mb-16" style={{ animation: "fade-in-up 0.7s ease-out 0.2s both" }}>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: "#7C3AED" }}>Features</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: "#155DD2" }}>Features</p>
           <h2 className="text-3xl md:text-5xl font-bold mb-5" style={{ color: "#0F172A" }}>
             Everything You Need to<br className="hidden md:block" /> Hire Smarter
           </h2>
@@ -505,14 +506,14 @@ export default function Home() {
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-xl flex items-center justify-center"
                 style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.12)" }}>
-                <GraduationCapIcon className="w-6 h-6" style={{ color: "#7C3AED" }} />
+                <GraduationCapIcon className="w-6 h-6" style={{ color: "#155DD2" }} />
               </div>
               <h3 className="text-xl font-semibold" style={{ color: "#0F172A" }}>For Employees</h3>
             </div>
             <ul className="space-y-3">
               {forStudents.map((point) => (
                 <li key={point} className="flex items-start gap-3">
-                  <CheckCircleIcon className="w-4 h-4 shrink-0 mt-0.5" style={{ color: "#7C3AED" }} />
+                  <CheckCircleIcon className="w-4 h-4 shrink-0 mt-0.5" style={{ color: "#155DD2" }} />
                   <span className="text-sm leading-relaxed" style={{ color: "#64748B" }}>{point}</span>
                 </li>
               ))}
@@ -574,13 +575,13 @@ export default function Home() {
             {/* Extracted reqs */}
             <div className="p-4 rounded-xl" style={{ background: "rgba(124,58,237,0.04)", border: "1px solid rgba(124,58,237,0.1)" }}>
               <div className="flex items-center gap-2 mb-3">
-                <SparklesIcon className="w-3.5 h-3.5" style={{ color: "#7C3AED" }} />
+                <SparklesIcon className="w-3.5 h-3.5" style={{ color: "#155DD2" }} />
                 <span className="text-xs font-semibold" style={{ color: "#0F172A" }}>AI-Extracted Requirements</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {["React", "Node.js", "AWS", "Docker"].map((s) => (
                   <span key={s} className="px-2 py-0.5 rounded text-[11px] font-medium"
-                    style={{ background: "rgba(124,58,237,0.08)", color: "#7C3AED", border: "1px solid rgba(124,58,237,0.12)" }}>{s}</span>
+                    style={{ background: "rgba(124,58,237,0.08)", color: "#155DD2", border: "1px solid rgba(124,58,237,0.12)" }}>{s}</span>
                 ))}
                 {["JavaScript", "Python"].map((l) => (
                   <span key={l} className="px-2 py-0.5 rounded text-[11px] font-medium"
@@ -602,7 +603,7 @@ export default function Home() {
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center text-xs font-bold shrink-0"
                   style={{
                     background: i === 0 ? "rgba(124,58,237,0.1)" : "rgba(0,0,0,0.03)",
-                    color: i === 0 ? "#7C3AED" : "#94A3B8",
+                    color: i === 0 ? "#155DD2" : "#94A3B8",
                   }}>
                   #{i + 1}
                 </div>
@@ -618,14 +619,14 @@ export default function Home() {
                   <svg className="w-11 h-11 -rotate-90" viewBox="0 0 44 44">
                     <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="3" />
                     <circle cx="22" cy="22" r="18" fill="none"
-                      stroke={r.score >= 80 ? "#059669" : r.score >= 60 ? "#7C3AED" : "#D97706"}
+                      stroke={r.score >= 80 ? "#059669" : r.score >= 60 ? "#155DD2" : "#D97706"}
                       strokeWidth="3"
                       strokeDasharray={`${(r.score / 100) * 113} 113`}
                       strokeLinecap="round" />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span className="text-[10px] font-bold"
-                      style={{ color: r.score >= 80 ? "#059669" : r.score >= 60 ? "#7C3AED" : "#D97706" }}>
+                      style={{ color: r.score >= 80 ? "#059669" : r.score >= 60 ? "#155DD2" : "#D97706" }}>
                       {r.score}%
                     </span>
                   </div>
@@ -657,21 +658,21 @@ export default function Home() {
           <div className="absolute inset-0 opacity-20" aria-hidden="true"
             style={{ background: "radial-gradient(ellipse at center, rgba(124,58,237,0.1) 0%, transparent 60%)" }} />
           <div className="relative z-10">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: "#D97706" }}>Get Started Today</p>
-            <h2 className="text-3xl md:text-5xl font-bold mb-5" style={{ color: "#0F172A" }}>
-              Ready to Transform<br className="hidden md:block" /> Your Hiring?
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: "#D97706" }}>Get Started today</p>
+            <h2 className="text-3xl md:text-5xl font-bold mb-5" style={{ color: "#0F172A" }}> Hire Smarter. Close Positions Faster.<br className="hidden md:block" /> 
             </h2>
             <p className="text-base md:text-lg mb-10 max-w-lg mx-auto" style={{ color: "#64748B" }}>
-              Join thousands of employees and recruiters already using Neurocruit
-              to make smarter, faster hiring decisions.
+              Find, evaluate, and hire top talent with precision using NeuroRecruit’s AI-powered recruitment platform.
+Built for recruiters who want speed, accuracy, and better candidate matching without the manual effort.
             </p>
+            <p className="text-base md:text-lg mb-10 max-w-lg mx-auto" style={{ color: "#64748B" }}>Access your recruiter dashboard and start hiring in minutes.</p>
             <Link href="/join-now"
               className="group inline-flex items-center gap-2.5 px-10 py-4.5 rounded-2xl text-base font-semibold text-white cursor-pointer transition-all duration-300 hover:shadow-[0_0_50px_rgba(124,58,237,0.4)] hover:-translate-y-0.5"
               style={{
-                background: "linear-gradient(135deg, #7C3AED, #6D28D9)",
+                background: "linear-gradient(135deg, #155DD2, #155DD2)",
                 boxShadow: "0 4px 24px rgba(124,58,237,0.3)",
               }}>
-              Create Free Account
+              Go to Recruiter Portal 
               <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
@@ -684,7 +685,7 @@ export default function Home() {
           <div className="flex items-center gap-2.5">
             <Image src="/neurocruit_logo_rectangle.png" alt="Neurocruit" width={250} height={42} className="rounded-sm" />
             {/* <span className="text-sm font-semibold" style={{ color: "#0F172A" }}>
-              Neuro<span style={{ color: "#7C3AED" }}>cruit</span>
+              Neuro<span style={{ color: "#155DD2" }}>cruit</span>
             </span> */}
           </div>
           <p className="text-xs" style={{ color: "#94A3B8" }}>
