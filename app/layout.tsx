@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <link rel="icon" type="image/x-icon" href="./neuro_favicon.png"/>
+      <link rel="icon" type="image/x-icon" href="./neuro_favicon.png" />
       <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         <ClientAOSProvider />
         <ReduxProvider>
@@ -33,11 +33,11 @@ export default function RootLayout({
           {children}
         </ReduxProvider>
         <Analytics />
-        <footer className="app-footer" style={{
+        {/* <footer className="app-footer" style={{
     textAlign: "center",
     padding: "1rem 0",
     fontSize: ".9rem"
-        }}><p>Made with ❤ By <a href="http://www.kkeydos.com" target="_blank" style={{ textDecoration: "underline" }}>KKEYDOS</a></p></footer>
+        }}><p>Made with ❤ By <a href="http://www.kkeydos.com" target="_blank" style={{ textDecoration: "underline" }}>KKEYDOS</a></p></footer> */}
       </body>
     </html>
   )
