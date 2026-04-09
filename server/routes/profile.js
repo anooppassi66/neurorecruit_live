@@ -131,4 +131,15 @@ router.delete('/resume', auth, async (req, res) => {
   }
 });
 
+router.get('/privacy-policy', (req, res) => {
+  res.json({
+    data: "<html><head><title>Home</title></head><body><h1>Hello World</h1><p>This is HTML from Node.js API</p> </body> </html>"
+  });
+});
+router.get('/terms-conditions', (req, res) => {
+  res.json({
+    data: "<html><head><title>Home</title></head><body><h1>Hello World</h1><p>This is HTML from Node.js API</p> </body> </html>"
+  });
+});
+
 module.exports = router;
