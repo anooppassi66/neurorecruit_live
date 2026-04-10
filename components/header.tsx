@@ -49,7 +49,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="/neurocruit-logo-rectangle.jpg"
+              src="/neurocruit-logo-rectangle.png"
               alt="NEUROCRUIT"
               width={250}
               height={50}
