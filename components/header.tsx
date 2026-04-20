@@ -43,7 +43,7 @@ export default function Header() {
 
   const isHide = pathname === '/my-profile'
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-gray-200">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-gray-200" style={{'backgroundColor' : '#3561AD','padding':'5px'}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -59,20 +59,20 @@ export default function Header() {
           </Link>
 
           {/* Navigation */}
-          {/* <nav className="hidden md:flex items-center gap-8">
-            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">
-              Home
+          <nav className="hidden md:flex items-center gap-8">
+            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition" style={{'color':'#fff'}}>
+             Profile
             </Link>
-            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">
-              About
+            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition" style={{'color':'#fff'}}>
+              Resume
             </Link>
-            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">
-              Services
+            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition" style={{'color':'#fff'}}>
+              Job Match
             </Link>
-            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition">
-              Login
+            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition" style={{'color':'#fff'}}>
+              Job Search
             </Link>
-          </nav> */}
+          </nav>
 
           {/* User Actions */}
           <div className="flex items-center gap-4">
@@ -84,7 +84,7 @@ export default function Header() {
                       <AvatarImage src="/placeholder-user.jpg" alt={user.name || "User"} />
                       <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
                     </Avatar>
-                    <span className="text-sm text-gray-700">{user.name}</span>
+                    <span className="text-sm text-gray-700" style={{'color':'#fff'}}>{user.name}</span>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-48" align="end">

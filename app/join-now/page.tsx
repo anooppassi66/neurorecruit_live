@@ -298,7 +298,7 @@ export default function JoinNowPage() {
               </Tabs>
 
               {/* Copyright Logos */}
-              <div className="mt-8 flex items-center justify-between opacity-80 pb-2">
+              {/* <div className="mt-8 flex items-center justify-between opacity-80 pb-2">
                 <div className="flex items-center">
                   <Image
                     src="/astra.webp"
@@ -318,7 +318,7 @@ export default function JoinNowPage() {
                     className="object-contain"
                   /></a>
                 </div>
-              </div>
+              </div> */}
             </section>
           </div>
         </div>

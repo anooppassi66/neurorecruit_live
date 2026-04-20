@@ -666,7 +666,7 @@ export default function Home() {
 Built for recruiters who want speed, accuracy, and better candidate matching without the manual effort.
             </p>
             <p className="text-base md:text-lg mb-10 max-w-lg mx-auto" style={{ color: "#64748B" }}>Access your recruiter dashboard and start hiring in minutes.</p>
-            <Link href="/join-now"
+            <Link href="https://recruit.neurocruit.ai/signup"
               className="group inline-flex items-center gap-2.5 px-10 py-4.5 rounded-2xl text-base font-semibold text-white cursor-pointer transition-all duration-300 hover:shadow-[0_0_50px_rgba(124,58,237,0.4)] hover:-translate-y-0.5"
               style={{
                 background: "linear-gradient(135deg, #3561AD, #3561AD)",
