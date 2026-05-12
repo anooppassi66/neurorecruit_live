@@ -146,7 +146,6 @@ export default function JoinNowPage() {
               alt="Neurocruit"
               width={190}
               height={76}
-              className="brightness-0 invert"
               priority
             />
           </div>
