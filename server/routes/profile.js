@@ -1,16 +1,17 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const os = require('os');
+const fs = require('fs');
 const Profile = require('../models/Profile');
 const auth = require('../middleware/auth');
-const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3');
-const multerS3 = require('multer-s3');
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const ResumeParser = require('simple-resume-parser');
 const dotenv = require('dotenv');
 dotenv.config();
 
 const router = express.Router();
 
-// Configure S3 client
 const s3 = new S3Client({
   region: process.env.AWS_REGION || 'us-east-1',
   credentials: {
@@ -19,38 +20,38 @@ const s3 = new S3Client({
   }
 });
 
-// Configure multer-s3 for file uploads
-const storage = multerS3({
-  s3: s3,
-  bucket: process.env.AWS_S3_BUCKET || 'neuro-resumes',
-  metadata: function (req, file, cb) {
-    cb(null, { fieldName: file.fieldname });
-  },
-  key: function (req, file, cb) {
-    cb(null, `resumes/${req.user._id}-${Date.now()}${path.extname(file.originalname)}`);
+// Use memory storage so we can read the buffer for parsing before uploading
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowed = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
+    allowed.includes(file.mimetype) ? cb(null, true) : cb(new Error('Only PDF, DOC, DOCX allowed'));
   }
 });
 
-const upload = multer({
-  storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type. Only PDF, DOC, and DOCX are allowed.'));
-    }
+async function parseResume(buffer, originalname) {
+  const ext = path.extname(originalname) || '.pdf';
+  const tmpPath = path.join(os.tmpdir(), `resume-${Date.now()}${ext}`);
+  fs.writeFileSync(tmpPath, buffer);
+  try {
+    const parser = new ResumeParser(tmpPath);
+    const data = await parser.parseToJSON();
+    return data;
+  } finally {
+    try { fs.unlinkSync(tmpPath); } catch (_) {}
   }
-});
+}
 
 // Get user profile
 router.get('/', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user._id });
-    if (!profile) {
-      return res.status(404).json({ message: 'Profile not found' });
-    }
+    if (!profile) return res.status(404).json({ message: 'Profile not found' });
     res.json(profile);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -60,45 +61,97 @@ router.get('/', auth, async (req, res) => {
 // Update user profile
 router.put('/', auth, async (req, res) => {
   try {
-    const updateData = req.body;
-    // Remove user field if present to prevent modification
+    const updateData = { ...req.body };
     delete updateData.user;
-
     const profile = await Profile.findOneAndUpdate(
       { user: req.user._id },
       updateData,
       { new: true, upsert: true, runValidators: true }
     );
-
     res.json({ message: 'Profile updated successfully', profile });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
-// Upload resume
+// Upload resume + parse into profile
 router.post('/resume', auth, upload.single('resume'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded' });
-    }
+    if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
 
-    const resumeData = {
-      filename: req.file.key,
-      url: req.file.location,
-      originalName: req.file.originalname,
-      mimetype: req.file.mimetype,
-      size: req.file.size,
-      uploadDate: new Date()
-    };
+    const { buffer, originalname, mimetype, size } = req.file;
+    const key = `resumes/${req.user._id}-${Date.now()}${path.extname(originalname)}`;
+
+    // Upload to S3
+    await s3.send(new PutObjectCommand({
+      Bucket: process.env.AWS_S3_BUCKET || 'neuro-resumes',
+      Key: key,
+      Body: buffer,
+      ContentType: mimetype
+    }));
+
+    const region = process.env.AWS_REGION || 'us-east-1';
+    const bucket = process.env.AWS_S3_BUCKET || 'neuro-resumes';
+    const url = `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
+
+    const resumeData = { filename: key, url, originalName: originalname, mimetype, size, uploadDate: new Date() };
+
+    // Parse resume
+    let profileUpdate = { resume: resumeData };
+    let parseError = null;
+    try {
+      const parsed = await parseResume(buffer, originalname);
+
+      const set = (key, val) => {
+        if (val !== null && val !== undefined && val !== '' && !(Array.isArray(val) && val.length === 0)) {
+          profileUpdate[key] = val;
+        }
+      };
+
+      set('fullName', parsed.name);
+      set('email', parsed.email);
+      set('phone', parsed.phone);
+      set('linkedin', parsed.linkedin);
+      set('portfolio', parsed.github || parsed.portfolio);
+      set('technicalSkills', Array.isArray(parsed.skills) ? parsed.skills : []);
+
+      if (Array.isArray(parsed.experience) && parsed.experience.length > 0) {
+        profileUpdate.experience = parsed.experience.map(e => ({
+          role: e.title || e.role || '',
+          company: e.company || '',
+          location: e.location || '',
+          duration: e.duration || e.dates || '',
+          summary: e.summary || e.description || '',
+        }));
+      }
+
+      if (Array.isArray(parsed.education) && parsed.education.length > 0) {
+        profileUpdate.education = parsed.education.map(e => ({
+          degree: e.degree || e.qualification || '',
+          institution: e.institution || e.school || e.university || '',
+          duration: e.duration || e.dates || '',
+          gpa: e.gpa || '',
+          coursework: e.coursework || '',
+        }));
+      }
+    } catch (err) {
+      parseError = err.message;
+      console.error('Resume parsing failed:', err.message);
+    }
 
     const profile = await Profile.findOneAndUpdate(
       { user: req.user._id },
-      { resume: resumeData },
+      profileUpdate,
       { new: true, upsert: true }
     );
 
-    res.json({ message: 'Resume uploaded successfully', profile });
+    res.json({
+      message: parseError
+        ? 'Resume uploaded. Parsing partially failed — some fields may be missing.'
+        : 'Resume uploaded and profile updated from resume.',
+      profile,
+      parseError: parseError || undefined
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
@@ -108,38 +161,33 @@ router.post('/resume', auth, upload.single('resume'), async (req, res) => {
 router.delete('/resume', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user._id });
-    if (profile && profile.resume && profile.resume.filename) {
+    if (profile?.resume?.filename) {
       try {
         await s3.send(new DeleteObjectCommand({
           Bucket: process.env.AWS_S3_BUCKET || 'neuro-resumes',
           Key: profile.resume.filename
         }));
       } catch (err) {
-        console.error('Failed to delete from S3', err);
+        console.error('S3 delete failed:', err.message);
       }
     }
-
-    const updatedProfile = await Profile.findOneAndUpdate(
+    const updated = await Profile.findOneAndUpdate(
       { user: req.user._id },
       { $unset: { resume: 1 } },
       { new: true }
     );
-
-    res.json({ message: 'Resume deleted successfully', profile: updatedProfile });
+    res.json({ message: 'Resume deleted successfully', profile: updated });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
 router.get('/privacy-policy', (req, res) => {
-  res.json({
-    data: "<html><head><title>Home</title></head><body><h1>Hello World</h1><p>This is HTML from Node.js API</p> </body> </html>"
-  });
+  res.json({ data: '<h1>Privacy Policy</h1>' });
 });
+
 router.get('/terms-conditions', (req, res) => {
-  res.json({
-    data: "<html><head><title>Home</title></head><body><h1>Hello World</h1><p>This is HTML from Node.js API</p> </body> </html>"
-  });
+  res.json({ data: '<h1>Terms & Conditions</h1>' });
 });
 
 module.exports = router;

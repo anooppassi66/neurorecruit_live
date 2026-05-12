@@ -60,16 +60,16 @@ export default function Header() {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition" style={{'color':'#fff'}}>
-             Profile
+            <Link href="/my-profile" className="text-sm font-medium text-white hover:text-blue-200 transition">
+              Profile
             </Link>
-            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition" style={{'color':'#fff'}}>
+            <Link href="/my-profile#resume" className="text-sm font-medium text-white hover:text-blue-200 transition">
               Resume
             </Link>
-            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition" style={{'color':'#fff'}}>
+            <Link href="/job-match" className="text-sm font-medium text-white hover:text-blue-200 transition">
               Job Match
             </Link>
-            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition" style={{'color':'#fff'}}>
+            <Link href="/job-search" className="text-sm font-medium text-white hover:text-blue-200 transition">
               Job Search
             </Link>
           </nav>

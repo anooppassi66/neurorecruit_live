@@ -36,8 +36,10 @@ import { Mail, MapPin, Phone, Globe, Linkedin, Edit3, Plus, Check, X, Trash2, Fi
 import { Fragment, useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { apiFetch, ApiError } from "@/lib/api"
-import { useSelector } from "react-redux"
+import { API_BASE } from "@/lib/config"
+import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "@/store"
+import { logout } from "@/store/authSlice"
 import { calculateProfileStrength } from "@/lib/profileStrength"
 
 export default function MyProfilePage() {
@@ -49,11 +51,19 @@ export default function MyProfilePage() {
   const [editingExperience, setEditingExperience] = useState<any | null>(null)
   const [editingEducation, setEditingEducation] = useState<any | null>(null)
   const router = useRouter()
+  const dispatch = useDispatch()
   const tokenFromStore = useSelector((s: RootState) => s.auth.token)
 
   useEffect(() => {
     checkAuth()
   }, [])
+
+  const clearSession = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    dispatch(logout())
+    router.push('/join-now')
+  }
 
   const checkAuth = () => {
     const token = tokenFromStore || localStorage.getItem('token')
@@ -69,14 +79,14 @@ export default function MyProfilePage() {
   const fetchUser = async () => {
     try {
       const token = tokenFromStore || localStorage.getItem('token')
-      const data = await apiFetch<any>('https://backend.neurocruit.ai/api/auth/me', {
+      const data = await apiFetch<any>(`${API_BASE}/api/auth/me`, {
         headers: { Authorization: `Bearer ${token}` }
       }, { showSuccess: false })
       if (data?.user) {
         setAvailability(data.user.availability === 1)
       }
     } catch (err) {
-      console.error('Failed to fetch user state', err)
+      if (err instanceof ApiError && err.status === 401) clearSession()
     }
   }
 
@@ -85,7 +95,7 @@ export default function MyProfilePage() {
     setAvailability(checked)
     try {
       const token = tokenFromStore || localStorage.getItem('token')
-      await apiFetch('https://backend.neurocruit.ai/api/auth/availability', {
+      await apiFetch(`${API_BASE}/api/auth/availability`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -102,15 +112,13 @@ export default function MyProfilePage() {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem('token')
-      const data = await apiFetch<any>('https://backend.neurocruit.ai/api/profile', {
+      const data = await apiFetch<any>(`${API_BASE}/api/profile`, {
         headers: { Authorization: `Bearer ${token}` }
       }, { showSuccess: false, toastId: 'profile:get' })
       setProfile(data)
     } catch (err: any) {
       if (err instanceof ApiError && err.status === 401) {
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-        router.push('/join-now')
+        clearSession()
       } else {
         setError(err?.message || 'Network error')
       }
@@ -122,7 +130,7 @@ export default function MyProfilePage() {
   const updateProfile = async (updates: any) => {
     try {
       const token = localStorage.getItem('token')
-      const data = await apiFetch<any>('https://backend.neurocruit.ai/api/profile', {
+      const data = await apiFetch<any>(`${API_BASE}/api/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -149,7 +157,7 @@ export default function MyProfilePage() {
 
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch('https://backend.neurocruit.ai/api/profile/resume', {
+      const response = await fetch(`${API_BASE}/api/profile/resume`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`
@@ -172,7 +180,7 @@ export default function MyProfilePage() {
   const handleDeleteResume = async () => {
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch('https://backend.neurocruit.ai/api/profile/resume', {
+      const response = await fetch(`${API_BASE}/api/profile/resume`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`

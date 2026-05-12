@@ -1,52 +1,88 @@
 "use client"
 
 import Image from "next/image"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Chrome, Facebook, Mail, Lock } from "lucide-react"
+import { Eye, EyeOff } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { apiFetch, ApiError } from "@/lib/api"
+import { apiFetch } from "@/lib/api"
+import { API_BASE } from "@/lib/config"
 import { useDispatch, useSelector } from "react-redux"
-import { setCredentials } from "@/store/authSlice"
+import { setCredentials, logout } from "@/store/authSlice"
 import type { RootState } from "@/store"
 
+const BRAND = "#2e5090"
+
+function isTokenValid(token: string): boolean {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]))
+    return payload.exp * 1000 > Date.now()
+  } catch {
+    return false
+  }
+}
+
+const SOCIAL = [
+  {
+    label: "Continue with Google",
+    icon: "https://d8it4huxumps7.cloudfront.net/uploads/images/google-logo-icon.webp",
+    iconW: 20, iconH: 20,
+  },
+  {
+    label: "Continue with LinkedIn",
+    icon: "https://d8it4huxumps7.cloudfront.net/uploads/images/664ecbbb1335e_linkedin_fav.png",
+    iconW: 20, iconH: 20,
+  },
+  {
+    label: "Continue with Microsoft",
+    icon: "https://d8it4huxumps7.cloudfront.net/uploads/images/69099ee004fa4_microsoft_logo.png",
+    iconW: 20, iconH: 20,
+  },
+]
+
 export default function JoinNowPage() {
-  const [loginData, setLoginData] = useState({ email: '', password: '' })
-  const [signupData, setSignupData] = useState({ name: '', email: '', password: '', confirmPassword: '' })
+  const [tab, setTab] = useState<"login" | "signup">("login")
+  const [loginData, setLoginData] = useState({ email: "", password: "" })
+  const [signupData, setSignupData] = useState({ name: "", email: "", password: "", confirmPassword: "" })
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState("")
+  const [showPwd, setShowPwd] = useState(false)
+  const [showPwd2, setShowPwd2] = useState(false)
+  const [showPwd3, setShowPwd3] = useState(false)
   const router = useRouter()
   const dispatch = useDispatch()
   const tokenFromStore = useSelector((s: RootState) => s.auth.token)
 
   useEffect(() => {
-    const token = tokenFromStore || localStorage.getItem('token')
-    if (token) {
-      // User is already logged in, redirect to profile
-      router.push('/my-profile')
+    const token = tokenFromStore || localStorage.getItem("token")
+    if (!token) return
+    if (isTokenValid(token)) {
+      router.push("/my-profile")
+    } else {
+      // Token exists but is expired — purge it so the user sees the login form
+      localStorage.removeItem("token")
+      localStorage.removeItem("user")
+      dispatch(logout())
     }
-  }, [router, tokenFromStore])
+  }, [router, tokenFromStore, dispatch])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setError('')
-
+    setError("")
     try {
-      const data = await apiFetch<any>('https://backend.neurocruit.ai/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(loginData)
-      }, { toastId: 'auth:login' })
+      const data = await apiFetch<any>(`${API_BASE}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginData),
+      }, { toastId: "auth:login" })
       dispatch(setCredentials({ token: data.token, user: data.user }))
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('user', JSON.stringify(data.user))
-      router.push('/my-profile')
+      localStorage.setItem("token", data.token)
+      localStorage.setItem("user", JSON.stringify(data.user))
+      router.push("/my-profile")
     } catch (err: any) {
-      setError(err?.message || 'Network error')
+      setError(err?.message || "Network error")
     } finally {
       setLoading(false)
     }
@@ -55,274 +91,316 @@ export default function JoinNowPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setError('')
-
+    setError("")
     if (signupData.password !== signupData.confirmPassword) {
-      setError('Passwords do not match')
+      setError("Passwords do not match")
       setLoading(false)
       return
     }
-
     try {
-      const data = await apiFetch<any>('https://backend.neurocruit.ai/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: signupData.name,
-          email: signupData.email,
-          password: signupData.password
-        })
-      }, { toastId: 'auth:register' })
+      const data = await apiFetch<any>(`${API_BASE}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: signupData.name, email: signupData.email, password: signupData.password }),
+      }, { toastId: "auth:register" })
       dispatch(setCredentials({ token: data.token, user: data.user }))
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('user', JSON.stringify(data.user))
-      router.push('/my-profile')
+      localStorage.setItem("token", data.token)
+      localStorage.setItem("user", JSON.stringify(data.user))
+      router.push("/my-profile")
     } catch (err: any) {
-      setError(err?.message || 'Network error')
+      setError(err?.message || "Network error")
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <>
-      <main className="min-h-screen w-full bg-emerald-50">
-        <div className="flex items-center justify-center min-h-screen w-full px-4">
-          <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 rounded-2xl bg-white/80 backdrop-blur-sm ring-1 ring-emerald-100 shadow-2xl overflow-hidden divide-y md:divide-x md:divide-y-0 divide-emerald-100">
-            <section className="flex flex-1 items-center justify-center bg-emerald-50 px-8 py-12">
-              <div className="w-full max-w-md mx-auto space-y-5 text-slate-900">
-                <Image
-                  src="/neurocruit_logo_rectangle.png"
-                  alt="NEUROCRUIT"
-                  width={220}
-                  height={120}
-                  className="mt-3"
-                  priority
-                />
-                <h1 className="text-3xl font-bold leading-snug md:text-4xl">
-                  Find your dream job simply and quickly
-                </h1>
-                <p className="text-sm text-slate-600 md:text-base">
-                  Match with opportunities that fit your skills and ambitions using smart,
-                  AI-powered recommendations.
-                </p>
-                <div className="mt-4 rounded-xl bg-white p-4 text-sm shadow-md ring-1 ring-emerald-100">
-                  <p className="font-medium text-slate-800">A better path to more opportunity</p>
-                  <p className="mt-1 text-slate-600">
-                    Discover curated roles from top companies and track your applications in one
-                    place.
-                  </p>
-                </div>
-              </div>
-            </section>
+    <main className="min-h-screen flex font-sans" style={{ background: "#f5f7fa" }}>
 
-            <section className="flex w-full flex-col bg-white px-8 py-10">
-              <div className="mb-6 space-y-1">
-                <h2 className="text-lg font-semibold text-slate-900">Welcome to Neurocruit</h2>
-                <p className="text-sm text-slate-500">
-                  Access your projects, manage applications, and collaborate with recruiters.
-                </p>
-              </div>
-              <Tabs defaultValue="login" className="w-full">
-                <TabsList className="mb-6 w-full justify-between bg-slate-100">
-                  <TabsTrigger value="login" className="flex-1">
-                    Login
-                  </TabsTrigger>
-                  <TabsTrigger value="signup" className="flex-1">
-                    Sign Up
-                  </TabsTrigger>
-                </TabsList>
+      {/* ── LEFT PANEL ── */}
+      <div className="hidden lg:flex relative w-[52%] min-h-screen overflow-hidden">
+        {/* base background image */}
+        <Image
+          src="https://d8it4huxumps7.cloudfront.net/uploads/images/6566e4c54d464_bg.png"
+          alt=""
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        {/* left decorative vector overlay (right edge decoration) */}
+        <div className="absolute inset-0 z-10 flex items-stretch">
+          <Image
+            src="https://d8it4huxumps7.cloudfront.net/uploads/images/login/left-vector.png"
+            alt=""
+            fill
+            className="object-cover object-right"
+          />
+        </div>
 
-                <TabsContent value="login" className="space-y-6">
-                  {error && <div className="text-red-600 text-sm">{error}</div>}
+        {/* content on top */}
+        <div className="relative z-20 flex flex-col w-full px-12 py-10">
+          {/* Neurocruit logo (white) */}
+          <div>
+            <Image
+              src="/neurocruit_logo_rectangle.png"
+              alt="Neurocruit"
+              width={190}
+              height={76}
+              className="brightness-0 invert"
+              priority
+            />
+          </div>
 
-                  {/* <div className="space-y-3">
-                  <Button
-                    variant="outline"
-                    className="flex w-full items-center justify-center gap-2 border-slate-200"
-                  >
-                    <Chrome className="h-4 w-4 text-blue-500" />
-                    Continue with Google
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="flex w-full items-center justify-center gap-2 border-slate-200"
-                  >
-                    <Facebook className="h-4 w-4 text-blue-600" />
-                    Continue with Facebook
-                  </Button>
-                </div> */}
+          {/* centred illustration carousel — use login-img-1 as static hero */}
+          <div className="flex-1 flex items-center justify-center py-8">
+            <Image
+              src="https://d8it4huxumps7.cloudfront.net/uploads/images/login/login-img-1.png"
+              alt="Find your dream job"
+              width={480}
+              height={380}
+              className="w-full max-w-[480px] h-auto object-contain drop-shadow-xl"
+            />
+          </div>
 
-                  {/* <div className="flex items-center gap-3 text-xs text-slate-400">
-                  <span className="h-px flex-1 bg-slate-200" />
-                  <span>OR</span>
-                  <span className="h-px flex-1 bg-slate-200" />
-                </div> */}
-
-                  <form
-                    className="space-y-4"
-                    onSubmit={handleLogin}
-                  >
-                    <div className="space-y-1.5">
-                      <Label htmlFor="login-email">
-                        <Mail className="mr-1 h-4 w-4 text-slate-400" />
-                        Enter your email
-                      </Label>
-                      <Input
-                        id="login-email"
-                        type="email"
-                        placeholder="you@example.com"
-                        value={loginData.email}
-                        onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="login-password">
-                        <Lock className="mr-1 h-4 w-4 text-slate-400" />
-                        Enter your password
-                      </Label>
-                      <Input
-                        id="login-password"
-                        type="password"
-                        placeholder="••••••••"
-                        value={loginData.password}
-                        onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="flex items-center justify-between text-xs text-slate-600">
-                      <label className="inline-flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          className="h-3.5 w-3.5 rounded border border-slate-300"
-                        />
-                        Remember me
-                      </label>
-                      <button type="button" className="text-indigo-600 hover:underline">
-                        Forgot your password?
-                      </button>
-                    </div>
-                    <Button type="submit" className="mt-2 w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
-                      {loading ? 'Signing in...' : 'Sign in'}
-                    </Button>
-                  </form>
-
-                  <p className="text-center text-xs text-slate-600">
-                    Don&apos;t have an account?{" "}
-                    <span className="cursor-pointer text-indigo-600 underline">
-                      Sign Up
-                    </span>
-                  </p>
-                </TabsContent>
-
-                <TabsContent value="signup" className="space-y-6">
-                  <div className="space-y-1">
-                    <h2 className="text-xl font-semibold text-slate-900">Create your account</h2>
-                    <p className="text-sm text-slate-500">
-                      Join the platform to track applications and get personalised job matches.
-                    </p>
-                  </div>
-
-                  <form
-                    className="space-y-4"
-                    onSubmit={handleSignup}
-                  >
-                    <div className="space-y-1.5">
-                      <Label htmlFor="signup-name">Full name</Label>
-                      <Input
-                        id="signup-name"
-                        type="text"
-                        placeholder="Sarah Johnson"
-                        value={signupData.name}
-                        onChange={(e) => setSignupData({ ...signupData, name: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="signup-email">
-                        <Mail className="mr-1 h-4 w-4 text-slate-400" />
-                        Email
-                      </Label>
-                      <Input
-                        id="signup-email"
-                        type="email"
-                        placeholder="you@example.com"
-                        value={signupData.email}
-                        onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="signup-password">
-                        <Lock className="mr-1 h-4 w-4 text-slate-400" />
-                        Password
-                      </Label>
-                      <Input
-                        id="signup-password"
-                        type="password"
-                        placeholder="Create a password"
-                        value={signupData.password}
-                        onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="signup-confirm">Confirm password</Label>
-                      <Input
-                        id="signup-confirm"
-                        type="password"
-                        placeholder="Re-enter your password"
-                        value={signupData.confirmPassword}
-                        onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <Button type="submit" className="mt-2 w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
-                      {loading ? 'Creating account...' : 'Create account'}
-                    </Button>
-                  </form>
-
-                  <p className="text-center text-xs text-slate-600">
-                    By signing up, you agree to our{" "}
-                    <span className="cursor-pointer text-indigo-600 underline">
-                      Terms of Service
-                    </span>{" "}
-                    and{" "}
-                    <span className="cursor-pointer text-indigo-600 underline">
-                      Privacy Policy
-                    </span>
-                    .
-                  </p>
-                </TabsContent>
-              </Tabs>
-
-              {/* Copyright Logos */}
-              {/* <div className="mt-8 flex items-center justify-between opacity-80 pb-2">
-                <div className="flex items-center">
-                  <Image
-                    src="/astra.webp"
-                    alt="Astra Consulting Corp"
-                    width={250}
-                    height={40}
-                    className="object-contain"
-                  />
-                </div>
-                <div className="flex items-center gap-2 text-xs text-slate-500 font-medium pt-2">
-                  <span>Powered by</span>
-                  <a href="https://www.kkeydos.com/" target="_blank"><Image
-                    src="/kkeydos.png"
-                    alt="Keydos"
-                    width={90}
-                    height={40}
-                    className="object-contain"
-                  /></a>
-                </div>
-              </div> */}
-            </section>
+          {/* dot indicators — static, matching Unstop style */}
+          <div className="flex justify-center gap-2 pb-6">
+            {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+              <span
+                key={i}
+                className="inline-block rounded-full transition-all"
+                style={{
+                  width: i === 0 ? 18 : 8,
+                  height: 8,
+                  background: i === 0 ? "#2c373e" : "#fefefe",
+                }}
+              />
+            ))}
           </div>
         </div>
-      </main>
-    </>
+      </div>
+
+      {/* ── RIGHT PANEL ── */}
+      <div className="flex-1 flex flex-col items-center justify-center min-h-screen px-5 py-10 bg-white lg:bg-transparent">
+
+        {/* mobile logo */}
+        <div className="lg:hidden mb-8">
+          <Image src="/neurocruit_logo_rectangle.png" alt="Neurocruit" width={160} height={60} priority />
+        </div>
+
+        <div className="w-full max-w-[420px]">
+
+          {/* ── Login as tabs (Candidate / Recruiter style → Login / Sign Up) ── */}
+          <div className="flex rounded-full border-2 mb-7 overflow-hidden" style={{ borderColor: BRAND }}>
+            <button
+              onClick={() => { setTab("login"); setError("") }}
+              className="flex-1 py-2.5 text-sm font-semibold transition-all"
+              style={{
+                background: tab === "login" ? BRAND : "transparent",
+                color: tab === "login" ? "#fff" : BRAND,
+              }}
+            >
+              Login
+            </button>
+            <button
+              onClick={() => { setTab("signup"); setError("") }}
+              className="flex-1 py-2.5 text-sm font-semibold transition-all"
+              style={{
+                background: tab === "signup" ? BRAND : "transparent",
+                color: tab === "signup" ? "#fff" : BRAND,
+              }}
+            >
+              Register
+            </button>
+          </div>
+
+          {/* ── Social login buttons ── */}
+          <div className="flex flex-col gap-3 mb-5">
+            {SOCIAL.map((s) => (
+              <button
+                key={s.label}
+                type="button"
+                className="w-full flex items-center gap-3 px-4 h-11 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition text-sm font-medium text-gray-700 shadow-sm"
+              >
+                <Image src={s.icon} alt={s.label} width={s.iconW} height={s.iconH} className="object-contain flex-shrink-0" />
+                <span className="flex-1 text-center">{s.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* OR divider */}
+          <div className="flex items-center gap-3 mb-5">
+            <span className="flex-1 h-px bg-gray-200" />
+            <span className="text-xs text-gray-400 font-medium">OR</span>
+            <span className="flex-1 h-px bg-gray-200" />
+          </div>
+
+          {error && (
+            <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+              {error}
+            </div>
+          )}
+
+          {/* ── LOGIN FORM ── */}
+          {tab === "login" && (
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                  Email Address
+                </label>
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="h-11 rounded-lg border-gray-200 text-sm"
+                  value={loginData.email}
+                  onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Password</label>
+                  <button type="button" className="text-xs font-medium hover:underline" style={{ color: BRAND }}>
+                    Forgot Password?
+                  </button>
+                </div>
+                <div className="relative">
+                  <Input
+                    type={showPwd ? "text" : "password"}
+                    placeholder="Enter your password"
+                    className="h-11 pr-10 rounded-lg border-gray-200 text-sm"
+                    value={loginData.password}
+                    onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    onClick={() => setShowPwd(!showPwd)}
+                  >
+                    {showPwd ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <input type="checkbox" id="remember" className="h-4 w-4 rounded border-gray-300 accent-[#2e5090]" />
+                <label htmlFor="remember">Remember me</label>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full h-11 rounded-full text-sm font-bold tracking-wide mt-1 hover:opacity-90 transition-opacity"
+                style={{ background: BRAND }}
+                disabled={loading}
+              >
+                {loading ? "Signing in…" : "Login"}
+              </Button>
+
+              <p className="text-center text-sm text-gray-500 pt-1">
+                New to Neurocruit?{" "}
+                <button type="button" onClick={() => setTab("signup")} className="font-semibold hover:underline" style={{ color: BRAND }}>
+                  Register Now
+                </button>
+              </p>
+            </form>
+          )}
+
+          {/* ── SIGNUP FORM ── */}
+          {tab === "signup" && (
+            <form onSubmit={handleSignup} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                  Full Name
+                </label>
+                <Input
+                  type="text"
+                  placeholder="Sarah Johnson"
+                  className="h-11 rounded-lg border-gray-200 text-sm"
+                  value={signupData.name}
+                  onChange={(e) => setSignupData({ ...signupData, name: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                  Email Address
+                </label>
+                <Input
+                  type="email"
+                  placeholder="you@example.com"
+                  className="h-11 rounded-lg border-gray-200 text-sm"
+                  value={signupData.email}
+                  onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                  Password
+                </label>
+                <div className="relative">
+                  <Input
+                    type={showPwd2 ? "text" : "password"}
+                    placeholder="Create a password"
+                    className="h-11 pr-10 rounded-lg border-gray-200 text-sm"
+                    value={signupData.password}
+                    onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
+                    required
+                  />
+                  <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" onClick={() => setShowPwd2(!showPwd2)}>
+                    {showPwd2 ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <Input
+                    type={showPwd3 ? "text" : "password"}
+                    placeholder="Re-enter your password"
+                    className="h-11 pr-10 rounded-lg border-gray-200 text-sm"
+                    value={signupData.confirmPassword}
+                    onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })}
+                    required
+                  />
+                  <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" onClick={() => setShowPwd3(!showPwd3)}>
+                    {showPwd3 ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full h-11 rounded-full text-sm font-bold tracking-wide mt-1 hover:opacity-90 transition-opacity"
+                style={{ background: BRAND }}
+                disabled={loading}
+              >
+                {loading ? "Creating account…" : "Create Account"}
+              </Button>
+
+              <p className="text-center text-xs text-gray-500 pt-1">
+                By registering you agree to our{" "}
+                <span className="cursor-pointer hover:underline" style={{ color: BRAND }}>Terms of Service</span>{" "}
+                &amp;{" "}
+                <span className="cursor-pointer hover:underline" style={{ color: BRAND }}>Privacy Policy</span>.
+              </p>
+
+              <p className="text-center text-sm text-gray-500">
+                Already have an account?{" "}
+                <button type="button" onClick={() => setTab("login")} className="font-semibold hover:underline" style={{ color: BRAND }}>
+                  Login Now
+                </button>
+              </p>
+            </form>
+          )}
+        </div>
+      </div>
+    </main>
   )
 }
