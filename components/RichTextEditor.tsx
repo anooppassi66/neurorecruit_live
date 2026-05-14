@@ -30,7 +30,7 @@ function ToolbarButton({
       onMouseDown={(e) => { e.preventDefault(); onClick() }}
       className={`p-1.5 rounded transition-colors ${
         active
-          ? "bg-[#2e5090] text-white"
+          ? "bg-[#165dd3] text-white"
           : "text-gray-600 hover:bg-gray-100"
       }`}
     >
@@ -81,7 +81,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: Props) 
   )
 
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-[#2e5090]/20 focus-within:border-[#2e5090] transition-all">
+    <div className="border border-gray-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-[#165dd3]/20 focus-within:border-[#165dd3] transition-all">
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-0.5 px-2 py-1.5 border-b border-gray-100 bg-gray-50">
         {/* Text style */}

@@ -12,22 +12,22 @@
   --popover: oklch(0.98 0 0);
   --popover-foreground: oklch(0.2 0 0);
   /* Updated primary color to NEUROCRUIT blue */
-  --primary: #2e5090;
+  --primary: #165dd3;
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.95 0.02 0);
   --secondary-foreground: oklch(0.2 0 0);
   --muted: oklch(0.92 0 0);
   --muted-foreground: oklch(0.5 0 0);
   /* Updated accent color to NEUROCRUIT blue */
-  --accent: #2e5090;
+  --accent: #165dd3;
   --accent-foreground: oklch(0.99 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.99 0 0);
   --border: oklch(0.92 0 0);
   --input: oklch(0.96 0 0);
   /* Updated ring color to NEUROCRUIT blue */
-  --ring: #2e5090;
-  --chart-1: #2e5090;
+  --ring: #165dd3;
+  --chart-1: #165dd3;
   --chart-2: #3d6ba8;
   --chart-3: #4c7bc0;
   --chart-4: #5b8bd8;
@@ -35,14 +35,14 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.98 0 0);
   --sidebar-foreground: oklch(0.2 0 0);
-  --sidebar-primary: #2e5090;
+  --sidebar-primary: #165dd3;
   --sidebar-primary-foreground: oklch(0.99 0 0);
   --sidebar-accent: oklch(0.92 0 0);
   --sidebar-accent-foreground: oklch(0.2 0 0);
   --sidebar-border: oklch(0.92 0 0);
-  --sidebar-ring: #2e5090;
+  --sidebar-ring: #165dd3;
   /* Updated accent colors to NEUROCRUIT blue shades */
-  --blue-accent: #2e5090;
+  --blue-accent: #165dd3;
   --blue-light: #3d6ba8;
 }
 

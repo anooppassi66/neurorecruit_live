@@ -10,7 +10,8 @@ import { API_BASE } from "@/lib/config"
 import { ArrowLeft, Mail, Phone, Briefcase, Calendar } from "lucide-react"
 
 const API = `${API_BASE}/api/jobs`
-const BRAND = "#2e5090"
+const BRAND = "#165dd3"
+const BRAND_BTN = "#155dfc"
 
 type Job = { _id: string; title: string; description: string; skills: string[]; contactEmail: string; contactPhone: string; createdAt: string }
 
@@ -120,7 +121,7 @@ export default function JobDetailPage() {
                 )}
               </div>
               <Button className="mt-5 w-full font-semibold rounded-full h-11 hover:opacity-90"
-                style={{ background: BRAND }}
+                style={{ background: BRAND_BTN }}
                 onClick={() => job.contactEmail && window.open(`mailto:${job.contactEmail}`, "_blank")}>
                 Apply Now
               </Button>

@@ -10,7 +10,8 @@ import { Pencil, Trash2, Plus, LogOut, Phone, Mail, Briefcase, X, Check } from "
 import RichTextEditor from "@/components/RichTextEditor"
 
 const API = `${API_BASE}/api/recruiter`
-const BRAND = "#2e5090"
+const BRAND = "#165dd3"
+const BRAND_BTN = "#155dfc"
 
 type Job = { _id: string; title: string; description: string; skills: string[]; contactEmail: string; contactPhone: string }
 type Recruiter = { id: string; name: string; email: string; contactEmail?: string; contactPhone?: string }
@@ -188,7 +189,7 @@ export default function RecruiterToolPage() {
             <Input type="password" placeholder="Password" value={authForm.password}
               onChange={e => setAuthForm(f => ({ ...f, password: e.target.value }))} required className="h-11" />
             <Button type="submit" className="w-full h-11 rounded-full font-semibold hover:opacity-90"
-              style={{ background: BRAND }} disabled={authLoading}>
+              style={{ background: BRAND_BTN }} disabled={authLoading}>
               {authLoading
                 ? (tab === "login" ? "Signing in…" : "Creating account…")
                 : (tab === "login" ? "Login" : "Create Account")}
@@ -251,7 +252,7 @@ export default function RecruiterToolPage() {
                 </div>
                 <div className="flex gap-3 pt-1">
                   <Button type="button" variant="outline" className="flex-1" onClick={() => setShowContact(false)}>Cancel</Button>
-                  <Button type="submit" className="flex-1 font-semibold" style={{ background: BRAND }} disabled={contactSaving}>
+                  <Button type="submit" className="flex-1 font-semibold" style={{ background: BRAND_BTN }} disabled={contactSaving}>
                     {contactSaving ? "Saving…" : "Save"}
                   </Button>
                 </div>
@@ -291,7 +292,7 @@ export default function RecruiterToolPage() {
                 </div>
                 <div className="flex gap-3 pt-1">
                   <Button type="button" variant="outline" className="flex-1" onClick={() => setShowJobForm(false)}>Cancel</Button>
-                  <Button type="submit" className="flex-1 font-semibold gap-1.5" style={{ background: BRAND }} disabled={jobLoading}>
+                  <Button type="submit" className="flex-1 font-semibold gap-1.5" style={{ background: BRAND_BTN }} disabled={jobLoading}>
                     <Check className="h-4 w-4" />
                     {jobLoading ? "Saving…" : editingJob ? "Update Job" : "Post Job"}
                   </Button>
@@ -307,7 +308,7 @@ export default function RecruiterToolPage() {
             <h2 className="text-xl font-bold text-gray-900">Your Job Posts</h2>
             <p className="text-sm text-gray-500 mt-0.5">{jobs.length} post{jobs.length !== 1 ? "s" : ""}</p>
           </div>
-          <Button onClick={openNewJob} className="gap-1.5 font-semibold" style={{ background: BRAND }}>
+          <Button onClick={openNewJob} className="gap-1.5 font-semibold" style={{ background: BRAND_BTN }}>
             <Plus className="h-4 w-4" /> New Job Post
           </Button>
         </div>

@@ -12,7 +12,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { setCredentials, logout } from "@/store/authSlice"
 import type { RootState } from "@/store"
 
-const BRAND = "#2e5090"
+const BRAND = "#165dd3"
+const BRAND_BTN = "#155dfc"
 
 function isTokenValid(token: string): boolean {
   try {
@@ -283,14 +284,14 @@ export default function JoinNowPage() {
               </div>
 
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <input type="checkbox" id="remember" className="h-4 w-4 rounded border-gray-300 accent-[#2e5090]" />
+                <input type="checkbox" id="remember" className="h-4 w-4 rounded border-gray-300 accent-[#155dfc]" />
                 <label htmlFor="remember">Remember me</label>
               </div>
 
               <Button
                 type="submit"
                 className="w-full h-11 rounded-full text-sm font-bold tracking-wide mt-1 hover:opacity-90 transition-opacity"
-                style={{ background: BRAND }}
+                style={{ background: BRAND_BTN }}
                 disabled={loading}
               >
                 {loading ? "Signing in…" : "Login"}
@@ -377,7 +378,7 @@ export default function JoinNowPage() {
               <Button
                 type="submit"
                 className="w-full h-11 rounded-full text-sm font-bold tracking-wide mt-1 hover:opacity-90 transition-opacity"
-                style={{ background: BRAND }}
+                style={{ background: BRAND_BTN }}
                 disabled={loading}
               >
                 {loading ? "Creating account…" : "Create Account"}

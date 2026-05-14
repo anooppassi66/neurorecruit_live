@@ -11,7 +11,8 @@ import { apiFetch } from "@/lib/api"
 import { API_BASE } from "@/lib/config"
 
 const API = `${API_BASE}/api/jobs`
-const BRAND = "#2e5090"
+const BRAND = "#165dd3"
+const BRAND_BTN = "#155dfc"
 
 type Job = { _id: string; title: string; description: string; skills: string[]; contactEmail: string; contactPhone: string; createdAt: string }
 type Pagination = { page: number; pageSize: number; total: number; totalPages: number }
@@ -77,7 +78,7 @@ export default function JobSearchPage() {
                 onChange={e => setInputVal(e.target.value)}
               />
             </div>
-            <Button type="submit" className="h-11 px-6 font-semibold" style={{ background: BRAND }}>
+            <Button type="submit" className="h-11 px-6 font-semibold" style={{ background: BRAND_BTN }}>
               Search
             </Button>
           </form>

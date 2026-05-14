@@ -12,7 +12,8 @@ import type { RootState } from "@/store"
 import { Briefcase, Mail, Phone, ChevronLeft, ChevronRight, Zap } from "lucide-react"
 
 const API = `${API_BASE}/api/jobs`
-const BRAND = "#2e5090"
+const BRAND = "#165dd3"
+const BRAND_BTN = "#155dfc"
 
 type Job = { _id: string; title: string; description: string; skills: string[]; contactEmail: string; contactPhone: string; matchCount: number }
 type Pagination = { page: number; pageSize: number; total: number; totalPages: number }
