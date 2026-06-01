@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Recruiter = require('./models/Recruiter');
 const Job = require('./models/Job');
 
 const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/neurocruit';
@@ -117,22 +116,13 @@ async function seed() {
   await mongoose.connect(MONGO_URI);
   console.log('Connected to MongoDB');
 
-  // Find or create a seed recruiter
-  let recruiter = await Recruiter.findOne({ email: 'seed@neurocruit.ai' });
-  if (!recruiter) {
-    recruiter = await Recruiter.create({
-      name: 'Neurocruit Seed',
-      email: 'seed@neurocruit.ai',
-      password: 'SeedPass123!',
-      contactEmail: 'seed@neurocruit.ai',
-      contactPhone: '+1-800-000-0000',
-    });
-    console.log('Created seed recruiter');
-  }
+  console.log('Using seed recruiter (external auth — no DB record needed)');
 
   const allJobs = [...phpJobs, ...nodeJobs, ...javaJobs].map(j => ({
     ...j,
-    recruiter: recruiter._id,
+    recruiterId: 'seed',
+    recruiterName: 'Neurocruit Seed',
+    recruiterEmail: 'seed@neurocruit.ai',
   }));
 
   await Job.insertMany(allJobs);

@@ -6,25 +6,33 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { apiFetch } from "@/lib/api"
 import { API_BASE } from "@/lib/config"
-import { Pencil, Trash2, Plus, LogOut, Phone, Mail, Briefcase, X, Check } from "lucide-react"
+import { Pencil, Trash2, Plus, LogOut, Phone, Mail, Briefcase, X, Check, User } from "lucide-react"
 import RichTextEditor from "@/components/RichTextEditor"
 
 const API = `${API_BASE}/api/recruiter`
 const BRAND = "#165dd3"
 const BRAND_BTN = "#155dfc"
 
-type Job = { _id: string; title: string; description: string; skills: string[]; contactEmail: string; contactPhone: string }
-type Recruiter = { id: string; name: string; email: string; contactEmail?: string; contactPhone?: string }
+type Job = {
+  _id: string
+  title: string
+  description: string
+  skills: string[]
+  contactEmail: string
+  contactPhone: string
+  recruiterName: string
+  recruiterEmail: string
+}
+type Recruiter = { id: string | number; name: string; email: string; contactEmail?: string; contactPhone?: string }
 
 export default function RecruiterToolPage() {
-  const [tab, setTab] = useState<"login" | "register">("login")
   const [recruiter, setRecruiter] = useState<Recruiter | null>(null)
   const [token, setToken] = useState<string>("")
   const [jobs, setJobs] = useState<Job[]>([])
 
-  const [authForm, setAuthForm] = useState({ name: "", email: "", password: "" })
-  const [authLoading, setAuthLoading] = useState(false)
-  const [authError, setAuthError] = useState("")
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" })
+  const [loginLoading, setLoginLoading] = useState(false)
+  const [loginError, setLoginError] = useState("")
 
   const [contactForm, setContactForm] = useState({ contactEmail: "", contactPhone: "" })
   const [contactSaving, setContactSaving] = useState(false)
@@ -57,28 +65,25 @@ export default function RecruiterToolPage() {
     } catch { /* toast shown by apiFetch */ }
   }
 
-  const handleAuth = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    setAuthLoading(true)
-    setAuthError("")
+    setLoginLoading(true)
+    setLoginError("")
     try {
-      const endpoint = tab === "login" ? `${API}/login` : `${API}/register`
-      const body: any = { email: authForm.email, password: authForm.password }
-      if (tab === "register") body.name = authForm.name
-      const data = await apiFetch<any>(endpoint, {
+      const data = await apiFetch<any>(`${API}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      }, { toastId: `recruiter:${tab}` })
+        body: JSON.stringify(loginForm)
+      }, { toastId: "recruiter:login" })
       setToken(data.token)
       setRecruiter(data.recruiter)
       localStorage.setItem("recruiter_token", data.token)
       localStorage.setItem("recruiter_user", JSON.stringify(data.recruiter))
       setContactForm({ contactEmail: data.recruiter.contactEmail || "", contactPhone: data.recruiter.contactPhone || "" })
     } catch (err: any) {
-      setAuthError(err?.message || "Network error")
+      setLoginError(err?.message || "Invalid credentials")
     } finally {
-      setAuthLoading(false)
+      setLoginLoading(false)
     }
   }
 
@@ -154,7 +159,7 @@ export default function RecruiterToolPage() {
     } catch { /* toast shown */ }
   }
 
-  // ── Auth screen ──
+  // ── Login screen ──
   if (!token || !recruiter) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-10">
@@ -162,37 +167,21 @@ export default function RecruiterToolPage() {
           <div className="mb-6 text-center">
             <Briefcase className="h-10 w-10 mx-auto mb-2" style={{ color: BRAND }} />
             <h1 className="text-xl font-bold text-gray-900">Recruiter Portal</h1>
-            <p className="text-sm text-gray-500 mt-1">Manage your job postings</p>
+            <p className="text-sm text-gray-500 mt-1">Sign in to manage your job postings</p>
           </div>
 
-          <div className="flex rounded-full border-2 mb-6 overflow-hidden" style={{ borderColor: BRAND }}>
-            {(["login", "register"] as const).map(t => (
-              <button key={t} onClick={() => { setTab(t); setAuthError("") }}
-                className="flex-1 py-2 text-sm font-semibold capitalize transition-all"
-                style={{ background: tab === t ? BRAND : "transparent", color: tab === t ? "#fff" : BRAND }}>
-                {t === "login" ? "Login" : "Register"}
-              </button>
-            ))}
-          </div>
-
-          {authError && (
-            <p className="mb-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{authError}</p>
+          {loginError && (
+            <p className="mb-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{loginError}</p>
           )}
 
-          <form onSubmit={handleAuth} className="space-y-4">
-            {tab === "register" && (
-              <Input placeholder="Full name" value={authForm.name}
-                onChange={e => setAuthForm(f => ({ ...f, name: e.target.value }))} required className="h-11" />
-            )}
-            <Input type="email" placeholder="Email address" value={authForm.email}
-              onChange={e => setAuthForm(f => ({ ...f, email: e.target.value }))} required className="h-11" />
-            <Input type="password" placeholder="Password" value={authForm.password}
-              onChange={e => setAuthForm(f => ({ ...f, password: e.target.value }))} required className="h-11" />
+          <form onSubmit={handleLogin} className="space-y-4">
+            <Input type="email" placeholder="Email address" value={loginForm.email}
+              onChange={e => setLoginForm(f => ({ ...f, email: e.target.value }))} required className="h-11" />
+            <Input type="password" placeholder="Password" value={loginForm.password}
+              onChange={e => setLoginForm(f => ({ ...f, password: e.target.value }))} required className="h-11" />
             <Button type="submit" className="w-full h-11 rounded-full font-semibold hover:opacity-90"
-              style={{ background: BRAND_BTN }} disabled={authLoading}>
-              {authLoading
-                ? (tab === "login" ? "Signing in…" : "Creating account…")
-                : (tab === "login" ? "Login" : "Create Account")}
+              style={{ background: BRAND_BTN }} disabled={loginLoading}>
+              {loginLoading ? "Signing in…" : "Login"}
             </Button>
           </form>
         </div>
@@ -335,6 +324,9 @@ export default function RecruiterToolPage() {
                       </div>
                     )}
                     <div className="flex items-center gap-4 mt-3 text-xs text-gray-400">
+                      {job.recruiterName && (
+                        <span className="flex items-center gap-1"><User className="h-3 w-3" />{job.recruiterName}</span>
+                      )}
                       {job.contactEmail && (
                         <span className="flex items-center gap-1"><Mail className="h-3 w-3" />{job.contactEmail}</span>
                       )}

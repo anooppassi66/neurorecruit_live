@@ -7,13 +7,13 @@ import { Badge } from "@/components/ui/badge"
 import Header from "@/components/header"
 import { apiFetch } from "@/lib/api"
 import { API_BASE } from "@/lib/config"
-import { ArrowLeft, Mail, Phone, Briefcase, Calendar } from "lucide-react"
+import { ArrowLeft, Mail, Phone, Briefcase, Calendar, User } from "lucide-react"
 
 const API = `${API_BASE}/api/jobs`
 const BRAND = "#165dd3"
 const BRAND_BTN = "#155dfc"
 
-type Job = { _id: string; title: string; description: string; skills: string[]; contactEmail: string; contactPhone: string; createdAt: string }
+type Job = { _id: string; title: string; description: string; skills: string[]; contactEmail: string; contactPhone: string; recruiterName: string; recruiterEmail: string; createdAt: string }
 
 export default function JobDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -101,10 +101,15 @@ export default function JobDetailPage() {
           )}
 
           {/* Contact */}
-          {(job.contactEmail || job.contactPhone) && (
+          {(job.recruiterName || job.contactEmail || job.contactPhone) && (
             <div className="border-t border-gray-100 pt-6">
               <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Contact Details</h2>
               <div className="space-y-2">
+                {job.recruiterName && (
+                  <p className="flex items-center gap-2 text-sm text-gray-700">
+                    <User className="h-4 w-4 text-gray-400" />{job.recruiterName}
+                  </p>
+                )}
                 {job.contactEmail && (
                   <a href={`mailto:${job.contactEmail}`}
                     className="flex items-center gap-2 text-sm hover:underline transition"
@@ -120,11 +125,6 @@ export default function JobDetailPage() {
                   </a>
                 )}
               </div>
-              <Button className="mt-5 w-full font-semibold rounded-full h-11 hover:opacity-90"
-                style={{ background: BRAND_BTN }}
-                onClick={() => job.contactEmail && window.open(`mailto:${job.contactEmail}`, "_blank")}>
-                Apply Now
-              </Button>
             </div>
           )}
         </div>

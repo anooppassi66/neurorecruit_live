@@ -1,83 +1,83 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const Recruiter = require('../models/Recruiter');
 const Job = require('../models/Job');
 const recruiterAuth = require('../middleware/recruiterAuth');
 
 const router = express.Router();
+const EXTERNAL_LOGIN = 'https://recruit.neurocruit.ai/api/auth/login';
 
-function makeToken(recruiterId) {
-  return jwt.sign(
-    { recruiterId },
-    process.env.JWT_SECRET || 'your-secret-key',
-    { expiresIn: '7d' }
-  );
-}
-
-// Register
-router.post('/register', async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password)
-      return res.status(400).json({ message: 'name, email and password are required' });
-
-    const existing = await Recruiter.findOne({ email });
-    if (existing) return res.status(400).json({ message: 'Email already registered' });
-
-    const recruiter = await Recruiter.create({ name, email, password });
-    res.status(201).json({
-      message: 'Recruiter registered successfully',
-      token: makeToken(recruiter._id),
-      recruiter: { id: recruiter._id, name: recruiter.name, email: recruiter.email }
-    });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
-  }
-});
-
-// Login
+// Login — proxied to external auth service
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const recruiter = await Recruiter.findOne({ email });
-    if (!recruiter || !(await recruiter.comparePassword(password)))
-      return res.status(400).json({ message: 'Invalid credentials' });
+    if (!email || !password)
+      return res.status(400).json({ message: 'Email and password are required' });
+
+    const response = await fetch(EXTERNAL_LOGIN, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      return res.status(response.status).json({ message: data.error || 'Invalid credentials' });
+    }
+
+    // Fetch stored contact details for this recruiter (if any)
+    const contactRecord = await Recruiter.findOne({ externalId: String(data.user.id) });
 
     res.json({
-      message: 'Login successful',
-      token: makeToken(recruiter._id),
-      recruiter: { id: recruiter._id, name: recruiter.name, email: recruiter.email }
+      token: data.token,
+      recruiter: {
+        id: data.user.id,
+        name: data.user.name,
+        email: data.user.email,
+        contactEmail: contactRecord?.contactEmail || '',
+        contactPhone: contactRecord?.contactPhone || ''
+      }
     });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+  } catch {
+    res.status(503).json({ message: 'Authentication service unavailable' });
   }
 });
 
-// Get current recruiter
+// Get current recruiter profile
 router.get('/me', recruiterAuth, async (req, res) => {
-  const r = req.recruiter;
-  res.json({ recruiter: { id: r._id, name: r.name, email: r.email, contactEmail: r.contactEmail, contactPhone: r.contactPhone } });
+  const contactRecord = await Recruiter.findOne({ externalId: String(req.recruiter.id) });
+  res.json({
+    recruiter: {
+      id: req.recruiter.id,
+      name: req.recruiter.name,
+      email: req.recruiter.email,
+      contactEmail: contactRecord?.contactEmail || '',
+      contactPhone: contactRecord?.contactPhone || ''
+    }
+  });
 });
 
 // Update contact details
 router.put('/contact', recruiterAuth, async (req, res) => {
   try {
     const { contactEmail, contactPhone } = req.body;
-    const recruiter = await Recruiter.findByIdAndUpdate(
-      req.recruiter._id,
+    const contactRecord = await Recruiter.findOneAndUpdate(
+      { externalId: String(req.recruiter.id) },
       { contactEmail, contactPhone },
-      { new: true }
+      { new: true, upsert: true }
     );
-    res.json({ message: 'Contact details updated', recruiter: { contactEmail: recruiter.contactEmail, contactPhone: recruiter.contactPhone } });
+    res.json({
+      message: 'Contact details updated',
+      recruiter: { contactEmail: contactRecord.contactEmail, contactPhone: contactRecord.contactPhone }
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
-// Get own jobs
+// Get own job posts
 router.get('/jobs', recruiterAuth, async (req, res) => {
   try {
-    const jobs = await Job.find({ recruiter: req.recruiter._id }).sort({ createdAt: -1 });
+    const jobs = await Job.find({ recruiterId: String(req.recruiter.id) }).sort({ createdAt: -1 });
     res.json(jobs);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -88,21 +88,24 @@ router.get('/jobs', recruiterAuth, async (req, res) => {
 router.post('/jobs', recruiterAuth, async (req, res) => {
   try {
     const { title, description, skills } = req.body;
-    if (!title || !description) return res.status(400).json({ message: 'title and description are required' });
+    if (!title || !description)
+      return res.status(400).json({ message: 'title and description are required' });
 
-    // skills may arrive as a comma-separated string or an array
     const skillsArr = Array.isArray(skills)
       ? skills
       : (skills || '').split(',').map(s => s.trim()).filter(Boolean);
 
-    const recruiter = req.recruiter;
+    const contactRecord = await Recruiter.findOne({ externalId: String(req.recruiter.id) });
+
     const job = await Job.create({
-      recruiter: recruiter._id,
+      recruiterId: String(req.recruiter.id),
+      recruiterName: req.recruiter.name,
+      recruiterEmail: req.recruiter.email,
       title,
       description,
       skills: skillsArr,
-      contactEmail: recruiter.contactEmail || '',
-      contactPhone: recruiter.contactPhone || ''
+      contactEmail: contactRecord?.contactEmail || '',
+      contactPhone: contactRecord?.contactPhone || ''
     });
     res.status(201).json({ message: 'Job created', job });
   } catch (error) {
@@ -119,8 +122,15 @@ router.put('/jobs/:id', recruiterAuth, async (req, res) => {
       : (skills || '').split(',').map(s => s.trim()).filter(Boolean);
 
     const job = await Job.findOneAndUpdate(
-      { _id: req.params.id, recruiter: req.recruiter._id },
-      { title, description, skills: skillsArr, updatedAt: new Date() },
+      { _id: req.params.id, recruiterId: String(req.recruiter.id) },
+      {
+        title,
+        description,
+        skills: skillsArr,
+        recruiterName: req.recruiter.name,
+        recruiterEmail: req.recruiter.email,
+        updatedAt: new Date()
+      },
       { new: true }
     );
     if (!job) return res.status(404).json({ message: 'Job not found or not yours' });
@@ -133,7 +143,7 @@ router.put('/jobs/:id', recruiterAuth, async (req, res) => {
 // Delete job post
 router.delete('/jobs/:id', recruiterAuth, async (req, res) => {
   try {
-    const job = await Job.findOneAndDelete({ _id: req.params.id, recruiter: req.recruiter._id });
+    const job = await Job.findOneAndDelete({ _id: req.params.id, recruiterId: String(req.recruiter.id) });
     if (!job) return res.status(404).json({ message: 'Job not found or not yours' });
     res.json({ message: 'Job deleted' });
   } catch (error) {
