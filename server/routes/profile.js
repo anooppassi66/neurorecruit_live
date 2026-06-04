@@ -4,9 +4,9 @@ const path = require('path');
 const Profile = require('../models/Profile');
 const auth = require('../middleware/auth');
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
-const Anthropic = require('@anthropic-ai/sdk');
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
+const { parseResume } = require('../utils/resumeParser');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -19,8 +19,6 @@ const s3 = new S3Client({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
   }
 });
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -42,69 +40,6 @@ async function extractText(buffer, mimetype) {
   }
   const result = await mammoth.extractRawText({ buffer });
   return result.value;
-}
-
-async function parseResumeWithClaude(text) {
-  const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 4096,
-    messages: [{
-      role: 'user',
-      content: `Extract structured information from the following resume and return ONLY a valid JSON object. Use null for missing scalar fields and [] for missing arrays. Do not include any text outside the JSON.
-
-{
-  "fullName": "full name of the candidate",
-  "headline": "short professional headline (e.g. 'Senior Full Stack Developer')",
-  "location": "city and country",
-  "phone": "phone number with country code",
-  "dateOfBirth": "YYYY-MM-DD or null",
-  "linkedin": "full LinkedIn profile URL or null",
-  "portfolio": "portfolio or personal website URL or null",
-  "professionalSummary": "2–4 sentence professional summary paragraph",
-  "languages": [
-    { "language": "English", "proficiency": "Native" }
-  ],
-  "designTools": ["Figma", "Sketch", "Adobe XD"],
-  "technicalSkills": ["JavaScript", "React", "Node.js"],
-  "softSkills": ["Leadership", "Communication", "Problem Solving"],
-  "experience": [
-    {
-      "role": "Job title",
-      "company": "Company name",
-      "location": "City, Country",
-      "duration": "Jan 2021 – Mar 2024",
-      "summary": "Brief description of responsibilities and achievements"
-    }
-  ],
-  "education": [
-    {
-      "degree": "Bachelor of Science in Computer Science",
-      "institution": "University name",
-      "duration": "2016 – 2020",
-      "gpa": "3.8 or null",
-      "coursework": "Data Structures, Algorithms, Databases"
-    }
-  ],
-  "projects": [
-    {
-      "title": "Project name",
-      "description": "What the project does and your role",
-      "tags": ["React", "Node.js"],
-      "githubLink": "https://github.com/... or null",
-      "liveLink": "https://... or null"
-    }
-  ]
-}
-
-Resume text:
-${text}`
-    }]
-  });
-
-  const raw = message.content[0].text;
-  const jsonMatch = raw.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) throw new Error('Could not extract JSON from Claude response');
-  return JSON.parse(jsonMatch[0]);
 }
 
 // Get user profile
@@ -156,65 +91,65 @@ router.post('/resume', auth, upload.single('resume'), async (req, res) => {
 
     const resumeData = { filename: key, url, originalName: originalname, mimetype, size, uploadDate: new Date() };
 
-    // Extract text then parse with Claude
     let profileUpdate = { resume: resumeData };
     let parseError = null;
 
     try {
       const text = await extractText(buffer, mimetype);
 
-      if (!text || text.trim().length < 50) {
+      if (!text || text.trim().length < 30) {
         throw new Error('Could not extract readable text from the resume file');
       }
 
-      const parsed = await parseResumeWithClaude(text);
+      const parsed = parseResume(text);
 
+      // Only write fields that have meaningful values
       const set = (field, val) => {
-        if (val !== null && val !== undefined && val !== '' && !(Array.isArray(val) && val.length === 0)) {
-          profileUpdate[field] = val;
-        }
+        if (val === null || val === undefined || val === '') return;
+        if (Array.isArray(val) && val.length === 0) return;
+        profileUpdate[field] = val;
       };
 
-      set('fullName', parsed.fullName);
-      set('headline', parsed.headline);
-      set('location', parsed.location);
-      set('phone', parsed.phone);
-      set('dateOfBirth', parsed.dateOfBirth);
-      set('linkedin', parsed.linkedin);
-      set('portfolio', parsed.portfolio);
+      set('fullName',           parsed.fullName);
+      set('headline',           parsed.headline);
+      set('location',           parsed.location);
+      set('phone',              parsed.phone);
+      set('dateOfBirth',        parsed.dateOfBirth);
+      set('linkedin',           parsed.linkedin);
+      set('portfolio',          parsed.portfolio);
       set('professionalSummary', parsed.professionalSummary);
-      set('languages', parsed.languages);
-      set('designTools', parsed.designTools);
-      set('technicalSkills', parsed.technicalSkills);
-      set('softSkills', parsed.softSkills);
+      set('languages',          parsed.languages);
+      set('designTools',        parsed.designTools);
+      set('technicalSkills',    parsed.technicalSkills);
+      set('softSkills',         parsed.softSkills);
 
       if (Array.isArray(parsed.experience) && parsed.experience.length > 0) {
         profileUpdate.experience = parsed.experience.map(e => ({
-          role: e.role || '',
-          company: e.company || '',
+          role:     e.role     || '',
+          company:  e.company  || '',
           location: e.location || '',
           duration: e.duration || '',
-          summary: e.summary || '',
+          summary:  e.summary  || '',
         }));
       }
 
       if (Array.isArray(parsed.education) && parsed.education.length > 0) {
         profileUpdate.education = parsed.education.map(e => ({
-          degree: e.degree || '',
+          degree:      e.degree      || '',
           institution: e.institution || '',
-          duration: e.duration || '',
-          gpa: e.gpa || '',
-          coursework: e.coursework || '',
+          duration:    e.duration    || '',
+          gpa:         e.gpa         || '',
+          coursework:  e.coursework  || '',
         }));
       }
 
       if (Array.isArray(parsed.projects) && parsed.projects.length > 0) {
         profileUpdate.projects = parsed.projects.map(p => ({
-          title: p.title || '',
+          title:       p.title       || '',
           description: p.description || '',
-          tags: Array.isArray(p.tags) ? p.tags : [],
-          githubLink: p.githubLink || '',
-          liveLink: p.liveLink || '',
+          tags:        Array.isArray(p.tags) ? p.tags : [],
+          githubLink:  p.githubLink  || '',
+          liveLink:    p.liveLink    || '',
         }));
       }
     } catch (err) {
