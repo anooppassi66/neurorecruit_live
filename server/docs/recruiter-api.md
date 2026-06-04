@@ -1,6 +1,6 @@
 # Recruiter API Documentation
 
-**Base URL:** `http://localhost:5001/api/recruiter`
+**Base URL:** `https://backend.neurocruit.ai/api/recruiter`
 
 Authentication is handled by the external service at `https://recruit.neurocruit.ai`. All protected routes require the token returned from `/login` passed as a Bearer token.
 

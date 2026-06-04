@@ -1,12 +1,12 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const os = require('os');
-const fs = require('fs');
 const Profile = require('../models/Profile');
 const auth = require('../middleware/auth');
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
-const ResumeParser = require('simple-resume-parser');
+const Anthropic = require('@anthropic-ai/sdk');
+const pdfParse = require('pdf-parse');
+const mammoth = require('mammoth');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -20,7 +20,8 @@ const s3 = new S3Client({
   }
 });
 
-// Use memory storage so we can read the buffer for parsing before uploading
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
@@ -34,17 +35,76 @@ const upload = multer({
   }
 });
 
-async function parseResume(buffer, originalname) {
-  const ext = path.extname(originalname) || '.pdf';
-  const tmpPath = path.join(os.tmpdir(), `resume-${Date.now()}${ext}`);
-  fs.writeFileSync(tmpPath, buffer);
-  try {
-    const parser = new ResumeParser(tmpPath);
-    const data = await parser.parseToJSON();
-    return data;
-  } finally {
-    try { fs.unlinkSync(tmpPath); } catch (_) {}
+async function extractText(buffer, mimetype) {
+  if (mimetype === 'application/pdf') {
+    const result = await pdfParse(buffer);
+    return result.text;
   }
+  const result = await mammoth.extractRawText({ buffer });
+  return result.value;
+}
+
+async function parseResumeWithClaude(text) {
+  const message = await anthropic.messages.create({
+    model: 'claude-sonnet-4-6',
+    max_tokens: 4096,
+    messages: [{
+      role: 'user',
+      content: `Extract structured information from the following resume and return ONLY a valid JSON object. Use null for missing scalar fields and [] for missing arrays. Do not include any text outside the JSON.
+
+{
+  "fullName": "full name of the candidate",
+  "headline": "short professional headline (e.g. 'Senior Full Stack Developer')",
+  "location": "city and country",
+  "phone": "phone number with country code",
+  "dateOfBirth": "YYYY-MM-DD or null",
+  "linkedin": "full LinkedIn profile URL or null",
+  "portfolio": "portfolio or personal website URL or null",
+  "professionalSummary": "2–4 sentence professional summary paragraph",
+  "languages": [
+    { "language": "English", "proficiency": "Native" }
+  ],
+  "designTools": ["Figma", "Sketch", "Adobe XD"],
+  "technicalSkills": ["JavaScript", "React", "Node.js"],
+  "softSkills": ["Leadership", "Communication", "Problem Solving"],
+  "experience": [
+    {
+      "role": "Job title",
+      "company": "Company name",
+      "location": "City, Country",
+      "duration": "Jan 2021 – Mar 2024",
+      "summary": "Brief description of responsibilities and achievements"
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science",
+      "institution": "University name",
+      "duration": "2016 – 2020",
+      "gpa": "3.8 or null",
+      "coursework": "Data Structures, Algorithms, Databases"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Project name",
+      "description": "What the project does and your role",
+      "tags": ["React", "Node.js"],
+      "githubLink": "https://github.com/... or null",
+      "liveLink": "https://... or null"
+    }
+  ]
+}
+
+Resume text:
+${text}`
+    }]
+  });
+
+  const raw = message.content[0].text;
+  const jsonMatch = raw.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) throw new Error('Could not extract JSON from Claude response');
+  return JSON.parse(jsonMatch[0]);
 }
 
 // Get user profile
@@ -96,42 +156,65 @@ router.post('/resume', auth, upload.single('resume'), async (req, res) => {
 
     const resumeData = { filename: key, url, originalName: originalname, mimetype, size, uploadDate: new Date() };
 
-    // Parse resume
+    // Extract text then parse with Claude
     let profileUpdate = { resume: resumeData };
     let parseError = null;
-    try {
-      const parsed = await parseResume(buffer, originalname);
 
-      const set = (key, val) => {
+    try {
+      const text = await extractText(buffer, mimetype);
+
+      if (!text || text.trim().length < 50) {
+        throw new Error('Could not extract readable text from the resume file');
+      }
+
+      const parsed = await parseResumeWithClaude(text);
+
+      const set = (field, val) => {
         if (val !== null && val !== undefined && val !== '' && !(Array.isArray(val) && val.length === 0)) {
-          profileUpdate[key] = val;
+          profileUpdate[field] = val;
         }
       };
 
-      set('fullName', parsed.name);
-      set('email', parsed.email);
+      set('fullName', parsed.fullName);
+      set('headline', parsed.headline);
+      set('location', parsed.location);
       set('phone', parsed.phone);
+      set('dateOfBirth', parsed.dateOfBirth);
       set('linkedin', parsed.linkedin);
-      set('portfolio', parsed.github || parsed.portfolio);
-      set('technicalSkills', Array.isArray(parsed.skills) ? parsed.skills : []);
+      set('portfolio', parsed.portfolio);
+      set('professionalSummary', parsed.professionalSummary);
+      set('languages', parsed.languages);
+      set('designTools', parsed.designTools);
+      set('technicalSkills', parsed.technicalSkills);
+      set('softSkills', parsed.softSkills);
 
       if (Array.isArray(parsed.experience) && parsed.experience.length > 0) {
         profileUpdate.experience = parsed.experience.map(e => ({
-          role: e.title || e.role || '',
+          role: e.role || '',
           company: e.company || '',
           location: e.location || '',
-          duration: e.duration || e.dates || '',
-          summary: e.summary || e.description || '',
+          duration: e.duration || '',
+          summary: e.summary || '',
         }));
       }
 
       if (Array.isArray(parsed.education) && parsed.education.length > 0) {
         profileUpdate.education = parsed.education.map(e => ({
-          degree: e.degree || e.qualification || '',
-          institution: e.institution || e.school || e.university || '',
-          duration: e.duration || e.dates || '',
+          degree: e.degree || '',
+          institution: e.institution || '',
+          duration: e.duration || '',
           gpa: e.gpa || '',
           coursework: e.coursework || '',
+        }));
+      }
+
+      if (Array.isArray(parsed.projects) && parsed.projects.length > 0) {
+        profileUpdate.projects = parsed.projects.map(p => ({
+          title: p.title || '',
+          description: p.description || '',
+          tags: Array.isArray(p.tags) ? p.tags : [],
+          githubLink: p.githubLink || '',
+          liveLink: p.liveLink || '',
         }));
       }
     } catch (err) {
@@ -147,8 +230,8 @@ router.post('/resume', auth, upload.single('resume'), async (req, res) => {
 
     res.json({
       message: parseError
-        ? 'Resume uploaded. Parsing partially failed — some fields may be missing.'
-        : 'Resume uploaded and profile updated from resume.',
+        ? 'Resume uploaded. Parsing failed — some fields may be missing.'
+        : 'Resume uploaded and profile updated successfully.',
       profile,
       parseError: parseError || undefined
     });
