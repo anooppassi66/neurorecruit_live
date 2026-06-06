@@ -4,21 +4,26 @@ const path = require('path');
 const Profile = require('../models/Profile');
 const auth = require('../middleware/auth');
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { BedrockRuntimeClient, ConverseCommand } = require('@aws-sdk/client-bedrock-runtime');
 const pdfParse = require('pdf-parse');
 const mammoth = require('mammoth');
-const { parseResume } = require('../utils/resumeParser');
 const dotenv = require('dotenv');
 dotenv.config();
 
 const router = express.Router();
 
-const s3 = new S3Client({
+const awsConfig = {
   region: process.env.AWS_REGION || 'us-east-1',
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
   }
-});
+};
+
+const s3 = new S3Client(awsConfig);
+const bedrock = new BedrockRuntimeClient(awsConfig);
+
+const BEDROCK_MODEL_ID = process.env.BEDROCK_MODEL_ID || 'anthropic.claude-3-5-sonnet-20241022-v2:0';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -40,6 +45,69 @@ async function extractText(buffer, mimetype) {
   }
   const result = await mammoth.extractRawText({ buffer });
   return result.value;
+}
+
+async function parseResumeWithBedrock(text) {
+  const prompt = `Extract structured information from the following resume and return ONLY a valid JSON object. Use null for missing scalar fields and [] for missing arrays. Do not include any text outside the JSON.
+
+{
+  "fullName": "full name of the candidate",
+  "headline": "short professional headline (e.g. 'Senior Full Stack Developer')",
+  "location": "city and country",
+  "phone": "phone number with country code",
+  "dateOfBirth": "YYYY-MM-DD or null",
+  "linkedin": "full LinkedIn profile URL or null",
+  "portfolio": "portfolio or personal website URL or null",
+  "professionalSummary": "2–4 sentence professional summary paragraph",
+  "languages": [
+    { "language": "English", "proficiency": "Native" }
+  ],
+  "designTools": ["Figma", "Sketch", "Adobe XD"],
+  "technicalSkills": ["JavaScript", "React", "Node.js"],
+  "softSkills": ["Leadership", "Communication", "Problem Solving"],
+  "experience": [
+    {
+      "role": "Job title",
+      "company": "Company name",
+      "location": "City, Country",
+      "duration": "Jan 2021 – Mar 2024",
+      "summary": "Brief description of responsibilities and achievements"
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science",
+      "institution": "University name",
+      "duration": "2016 – 2020",
+      "gpa": "3.8 or null",
+      "coursework": "Data Structures, Algorithms, Databases"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Project name",
+      "description": "What the project does and your role",
+      "tags": ["React", "Node.js"],
+      "githubLink": "https://github.com/... or null",
+      "liveLink": "https://... or null"
+    }
+  ]
+}
+
+Resume text:
+${text}`;
+
+  const command = new ConverseCommand({
+    modelId: BEDROCK_MODEL_ID,
+    messages: [{ role: 'user', content: [{ text: prompt }] }],
+    inferenceConfig: { maxTokens: 4096 }
+  });
+
+  const response = await bedrock.send(command);
+  const raw = response.output.message.content[0].text;
+  const jsonMatch = raw.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) throw new Error('Could not extract JSON from Bedrock response');
+  return JSON.parse(jsonMatch[0]);
 }
 
 // Get user profile
@@ -101,27 +169,26 @@ router.post('/resume', auth, upload.single('resume'), async (req, res) => {
         throw new Error('Could not extract readable text from the resume file');
       }
 
-      const parsed = parseResume(text);
+      const parsed = await parseResumeWithBedrock(text);
 
-      // Only write fields that have meaningful values
       const set = (field, val) => {
         if (val === null || val === undefined || val === '') return;
         if (Array.isArray(val) && val.length === 0) return;
         profileUpdate[field] = val;
       };
 
-      set('fullName',           parsed.fullName);
-      set('headline',           parsed.headline);
-      set('location',           parsed.location);
-      set('phone',              parsed.phone);
-      set('dateOfBirth',        parsed.dateOfBirth);
-      set('linkedin',           parsed.linkedin);
-      set('portfolio',          parsed.portfolio);
+      set('fullName',            parsed.fullName);
+      set('headline',            parsed.headline);
+      set('location',            parsed.location);
+      set('phone',               parsed.phone);
+      set('dateOfBirth',         parsed.dateOfBirth);
+      set('linkedin',            parsed.linkedin);
+      set('portfolio',           parsed.portfolio);
       set('professionalSummary', parsed.professionalSummary);
-      set('languages',          parsed.languages);
-      set('designTools',        parsed.designTools);
-      set('technicalSkills',    parsed.technicalSkills);
-      set('softSkills',         parsed.softSkills);
+      set('languages',           parsed.languages);
+      set('designTools',         parsed.designTools);
+      set('technicalSkills',     parsed.technicalSkills);
+      set('softSkills',          parsed.softSkills);
 
       if (Array.isArray(parsed.experience) && parsed.experience.length > 0) {
         profileUpdate.experience = parsed.experience.map(e => ({
