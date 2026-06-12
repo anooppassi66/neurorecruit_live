@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Header from "@/components/header"
-import { Search, MapPin, Phone, Mail, ChevronLeft, ChevronRight, Briefcase } from "lucide-react"
+import { Search, MapPin, Phone, Mail, ChevronLeft, ChevronRight, Briefcase, DollarSign } from "lucide-react"
 import { apiFetch } from "@/lib/api"
 import { API_BASE } from "@/lib/config"
 
@@ -14,7 +14,7 @@ const API = `${API_BASE}/api/jobs`
 const BRAND = "#165dd3"
 const BRAND_BTN = "#155dfc"
 
-type Job = { _id: string; title: string; description: string; skills: string[]; contactEmail: string; contactPhone: string; createdAt: string }
+type Job = { _id: string; title: string; description: string; skills: string[]; city: string; hourlyRate: string; contactEmail: string; contactPhone: string; createdAt: string }
 type Pagination = { page: number; pageSize: number; total: number; totalPages: number }
 
 export default function JobSearchPage() {
@@ -130,7 +130,9 @@ export default function JobSearchPage() {
                     )}
                   </div>
                 )}
-                <div className="flex items-center gap-4 mt-3 text-xs text-gray-400">
+                <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-gray-400">
+                  {job.city && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{job.city}</span>}
+                  {job.hourlyRate && <span className="flex items-center gap-1"><DollarSign className="h-3 w-3" />{job.hourlyRate}</span>}
                   {job.contactEmail && <span className="flex items-center gap-1"><Mail className="h-3 w-3" />{job.contactEmail}</span>}
                   {job.contactPhone && <span className="flex items-center gap-1"><Phone className="h-3 w-3" />{job.contactPhone}</span>}
                   <span className="ml-auto" style={{ color: BRAND }}>View details →</span>

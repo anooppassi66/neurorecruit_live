@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { apiFetch } from "@/lib/api"
 import { API_BASE } from "@/lib/config"
-import { Pencil, Trash2, Plus, LogOut, Phone, Mail, Briefcase, X, Check, User } from "lucide-react"
+import { Pencil, Trash2, Plus, LogOut, Phone, Mail, Briefcase, X, Check, User, MapPin, DollarSign } from "lucide-react"
 import RichTextEditor from "@/components/RichTextEditor"
 
 const API = `${API_BASE}/api/recruiter`
@@ -18,6 +18,8 @@ type Job = {
   title: string
   description: string
   skills: string[]
+  city: string
+  hourlyRate: string
   contactEmail: string
   contactPhone: string
   recruiterName: string
@@ -38,7 +40,7 @@ export default function RecruiterToolPage() {
   const [contactSaving, setContactSaving] = useState(false)
   const [showContact, setShowContact] = useState(false)
 
-  const [jobForm, setJobForm] = useState({ title: "", description: "", skills: "" })
+  const [jobForm, setJobForm] = useState({ title: "", description: "", skills: "", city: "", hourlyRate: "" })
   const [editingJob, setEditingJob] = useState<Job | null>(null)
   const [jobLoading, setJobLoading] = useState(false)
   const [showJobForm, setShowJobForm] = useState(false)
@@ -113,13 +115,13 @@ export default function RecruiterToolPage() {
 
   const openNewJob = () => {
     setEditingJob(null)
-    setJobForm({ title: "", description: "", skills: "" })
+    setJobForm({ title: "", description: "", skills: "", city: "", hourlyRate: "" })
     setShowJobForm(true)
   }
 
   const openEditJob = (job: Job) => {
     setEditingJob(job)
-    setJobForm({ title: job.title, description: job.description, skills: job.skills.join(", ") })
+    setJobForm({ title: job.title, description: job.description, skills: job.skills.join(", "), city: job.city || "", hourlyRate: job.hourlyRate || "" })
     setShowJobForm(true)
   }
 
@@ -127,7 +129,7 @@ export default function RecruiterToolPage() {
     e.preventDefault()
     setJobLoading(true)
     try {
-      const payload = { title: jobForm.title, description: jobForm.description, skills: jobForm.skills }
+      const payload = { title: jobForm.title, description: jobForm.description, skills: jobForm.skills, city: jobForm.city, hourlyRate: jobForm.hourlyRate }
       if (editingJob) {
         await apiFetch(`${API}/jobs/${editingJob._id}`, {
           method: "PUT",
@@ -279,6 +281,18 @@ export default function RecruiterToolPage() {
                   <Input className="h-11" placeholder="React, TypeScript, Node.js" value={jobForm.skills}
                     onChange={e => setJobForm(f => ({ ...f, skills: e.target.value }))} />
                 </div>
+                <div className="flex gap-3">
+                  <div className="flex-1">
+                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">City</label>
+                    <Input className="h-11" placeholder="e.g. New York" value={jobForm.city}
+                      onChange={e => setJobForm(f => ({ ...f, city: e.target.value }))} />
+                  </div>
+                  <div className="flex-1">
+                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-1.5">Hourly Rate</label>
+                    <Input className="h-11" placeholder="e.g. $50/hr" value={jobForm.hourlyRate}
+                      onChange={e => setJobForm(f => ({ ...f, hourlyRate: e.target.value }))} />
+                  </div>
+                </div>
                 <div className="flex gap-3 pt-1">
                   <Button type="button" variant="outline" className="flex-1" onClick={() => setShowJobForm(false)}>Cancel</Button>
                   <Button type="submit" className="flex-1 font-semibold gap-1.5" style={{ background: BRAND_BTN }} disabled={jobLoading}>
@@ -323,7 +337,13 @@ export default function RecruiterToolPage() {
                         ))}
                       </div>
                     )}
-                    <div className="flex items-center gap-4 mt-3 text-xs text-gray-400">
+                    <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-gray-400">
+                      {job.city && (
+                        <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{job.city}</span>
+                      )}
+                      {job.hourlyRate && (
+                        <span className="flex items-center gap-1"><DollarSign className="h-3 w-3" />{job.hourlyRate}</span>
+                      )}
                       {job.recruiterName && (
                         <span className="flex items-center gap-1"><User className="h-3 w-3" />{job.recruiterName}</span>
                       )}

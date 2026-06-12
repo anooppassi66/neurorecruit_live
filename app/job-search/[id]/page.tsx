@@ -7,13 +7,13 @@ import { Badge } from "@/components/ui/badge"
 import Header from "@/components/header"
 import { apiFetch } from "@/lib/api"
 import { API_BASE } from "@/lib/config"
-import { ArrowLeft, Mail, Phone, Briefcase, Calendar, User } from "lucide-react"
+import { ArrowLeft, Mail, Phone, Briefcase, Calendar, User, MapPin, DollarSign } from "lucide-react"
 
 const API = `${API_BASE}/api/jobs`
 const BRAND = "#165dd3"
 const BRAND_BTN = "#155dfc"
 
-type Job = { _id: string; title: string; description: string; skills: string[]; contactEmail: string; contactPhone: string; recruiterName: string; recruiterEmail: string; createdAt: string }
+type Job = { _id: string; title: string; description: string; skills: string[]; city: string; hourlyRate: string; contactEmail: string; contactPhone: string; recruiterName: string; recruiterEmail: string; createdAt: string }
 
 export default function JobDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -71,9 +71,21 @@ export default function JobDetailPage() {
           {/* Title */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-gray-900">{job.title}</h1>
-            <div className="flex items-center gap-1.5 mt-2 text-sm text-gray-400">
-              <Calendar className="h-3.5 w-3.5" />
-              Posted {new Date(job.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+            <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-gray-400">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5" />
+                Posted {new Date(job.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+              </span>
+              {job.city && (
+                <span className="flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5" />{job.city}
+                </span>
+              )}
+              {job.hourlyRate && (
+                <span className="flex items-center gap-1.5 font-medium" style={{ color: BRAND }}>
+                  <DollarSign className="h-3.5 w-3.5" />{job.hourlyRate}
+                </span>
+              )}
             </div>
           </div>
 

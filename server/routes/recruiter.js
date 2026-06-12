@@ -87,7 +87,7 @@ router.get('/jobs', recruiterAuth, async (req, res) => {
 // Create job post
 router.post('/jobs', recruiterAuth, async (req, res) => {
   try {
-    const { title, description, skills } = req.body;
+    const { title, description, skills, city, hourlyRate } = req.body;
     if (!title || !description)
       return res.status(400).json({ message: 'title and description are required' });
 
@@ -104,6 +104,8 @@ router.post('/jobs', recruiterAuth, async (req, res) => {
       title,
       description,
       skills: skillsArr,
+      city: city || '',
+      hourlyRate: hourlyRate || '',
       contactEmail: contactRecord?.contactEmail || '',
       contactPhone: contactRecord?.contactPhone || ''
     });
@@ -116,7 +118,7 @@ router.post('/jobs', recruiterAuth, async (req, res) => {
 // Edit job post
 router.put('/jobs/:id', recruiterAuth, async (req, res) => {
   try {
-    const { title, description, skills } = req.body;
+    const { title, description, skills, city, hourlyRate } = req.body;
     const skillsArr = Array.isArray(skills)
       ? skills
       : (skills || '').split(',').map(s => s.trim()).filter(Boolean);
@@ -127,6 +129,8 @@ router.put('/jobs/:id', recruiterAuth, async (req, res) => {
         title,
         description,
         skills: skillsArr,
+        city: city || '',
+        hourlyRate: hourlyRate || '',
         recruiterName: req.recruiter.name,
         recruiterEmail: req.recruiter.email,
         updatedAt: new Date()
