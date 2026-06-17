@@ -143,7 +143,9 @@ Returns all job posts belonging to the authenticated recruiter, sorted newest fi
     "contactEmail": "hiring@company.com",
     "contactPhone": "+1 555 000 0000",
     "createdAt": "2025-06-01T10:00:00.000Z",
-    "updatedAt": "2025-06-01T10:00:00.000Z"
+    "updatedAt": "2025-06-01T10:00:00.000Z",
+    "city" : "toronto",
+    "hourlyRate" : 10
   }
 ]
 ```
@@ -163,7 +165,9 @@ Creates a new job post. `contactEmail` and `contactPhone` are automatically pull
 {
   "title": "Senior Frontend Engineer",
   "description": "<p>We are looking for an experienced...</p>",
-  "skills": ["React", "TypeScript", "Node.js"]
+  "skills": ["React", "TypeScript", "Node.js"],
+  "city" : "toronto",
+  "hourlyRate" : 10
 }
 ```
 
@@ -220,7 +224,9 @@ Updates an existing job post. Only the owning recruiter can edit a post.
 {
   "title": "Lead Frontend Engineer",
   "description": "<p>Updated description...</p>",
-  "skills": ["React", "TypeScript", "GraphQL"]
+  "skills": ["React", "TypeScript", "GraphQL"],
+    "city" : "toronto",
+  "hourlyRate" : 10
 }
 ```
 

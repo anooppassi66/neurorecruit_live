@@ -6,6 +6,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  allowedDevOrigins: ['neurocruit.ai', 'www.neurocruit.ai'],
 }
 
 export default nextConfig
