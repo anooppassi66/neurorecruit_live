@@ -66,7 +66,7 @@ export default function JobMatchPage() {
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-2 mb-1">
             <Zap className="h-5 w-5" style={{ color: BRAND }} />
-            <h1 className="text-2xl font-bold text-gray-900">Job Match</h1>
+            <h1 className="text-2xl font-bold text-[#165dd3]">Job Match</h1>
           </div>
           <p className="text-sm text-gray-500">Jobs matched to your skills — ranked by relevance.</p>
         </div>
@@ -105,7 +105,7 @@ export default function JobMatchPage() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
-                    <h2 className="font-semibold text-gray-900 text-base">{job.title}</h2>
+                    <h2 className="font-semibold text-[#165dd3] text-base">{job.title}</h2>
                     <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">{job.description.replace(/<[^>]+>/g, " ").trim()}</p>
                     {job.skills.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 mt-3">

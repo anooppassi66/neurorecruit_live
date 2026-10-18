@@ -24,7 +24,7 @@ export default function HeroSection() {
           <div className="space-y-8 animate-slide-in-left">
             {/* Main Headline */}
             <div className="space-y-4">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#165dd3] leading-tight">
                 Bring your talent <span className="text-indigo-600">our AI will get you a job</span>
               </h1>
               <p className="text-lg text-gray-600 max-w-md font-medium">

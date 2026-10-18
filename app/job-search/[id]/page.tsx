@@ -70,7 +70,7 @@ export default function JobDetailPage() {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
           {/* Title */}
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">{job.title}</h1>
+            <h1 className="text-2xl font-bold text-[#165dd3]">{job.title}</h1>
             <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-gray-400">
               <span className="flex items-center gap-1.5">
                 <Calendar className="h-3.5 w-3.5" />

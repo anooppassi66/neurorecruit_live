@@ -67,7 +67,7 @@ export default function JobSearchPage() {
       {/* Search bar */}
       <div className="border-b border-gray-200 bg-white px-4 py-5">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Job Search</h1>
+          <h1 className="text-2xl font-bold text-[#165dd3] mb-4">Job Search</h1>
           <form onSubmit={handleSearch} className="flex gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -118,7 +118,7 @@ export default function JobSearchPage() {
                 onClick={() => router.push(`/job-search/${job._id}`)}
                 className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 cursor-pointer hover:shadow-md hover:border-blue-100 transition-all"
               >
-                <h2 className="font-semibold text-gray-900 text-base">{job.title}</h2>
+                <h2 className="font-semibold text-[#165dd3] text-base">{job.title}</h2>
                 <p className="text-sm text-gray-500 mt-1.5 line-clamp-2">{job.description.replace(/<[^>]+>/g, " ").trim()}</p>
                 {job.skills.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 mt-3">

@@ -30,7 +30,7 @@ export default function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#165dd3] mb-4">
             Why Choose <span className="text-indigo-600">Us?</span>
           </h2>
         </div>
@@ -49,7 +49,7 @@ export default function FeaturesSection() {
                   {/* <Icon className="w-8 h-8 text-indigo-600" /> */}
                 {/* </div> */}
                   <Image src={feature.image} alt={feature.description} height={150} width={150}/>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                <h3 className="text-xl font-semibold text-[#165dd3] mb-2">{feature.title}</h3>
                 <p className="text-gray-600 font-medium">{feature.description}</p>
               </div>
             )

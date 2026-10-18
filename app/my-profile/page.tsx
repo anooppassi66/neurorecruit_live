@@ -766,7 +766,7 @@ export default function MyProfilePage() {
                       <p className="text-xs text-slate-500">
                         PDF, DOC, or DOCX only. Max size 10MB.
                       </p>
-                      <Button size="sm" className="mt-4 bg-indigo-600 text-white hover:bg-indigo-700" disabled={isUploading}>
+                      <Button size="sm" className="mt-4 bg-[#165DD3] text-white hover:bg-indigo-700" disabled={isUploading}>
                         Choose File
                       </Button>
                     </div>

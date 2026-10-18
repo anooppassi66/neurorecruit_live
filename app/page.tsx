@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 import { ShootingStars } from "../components/ShootingStars";
 import { StarsBackground } from "../components/StarsBackground";
 
@@ -258,6 +259,27 @@ const forRecruiters = [
 /* ───────── Component ───────── */
 
 export default function Home() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="relative min-h-screen overflow-hidden" style={{ background: "#FFFFFF" }}>
 
@@ -417,6 +439,21 @@ export default function Home() {
               <div className="text-sm" style={{ color: "#94A3B8" }}>{stat.label}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ─── Recruitment video ─── */}
+      <section className="relative z-10 mx-auto max-w-6xl px-6 pb-28"
+        style={{ animation: "fade-in-up 0.8s ease-out 0.2s both" }}>
+        <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-video">
+          <video
+            ref={videoRef}
+            className="absolute inset-0 w-full h-full object-cover"
+            src="/assets/hero-recruitment.mp4"
+            loop
+            muted
+            playsInline
+          />
         </div>
       </section>
 

@@ -27,7 +27,7 @@ export default function ResourcesSection() {
         {/* Section Header */}
         <div className="text-center mb-16 animate-fade-in-up">
           <p className="text-indigo-600 text-sm font-semibold mb-2">DIVE DEEPER WITH</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#165dd3]">
             Valuable <span className="text-indigo-600">Insights</span>
           </h2>
         </div>
@@ -53,7 +53,7 @@ export default function ResourcesSection() {
                 />
               </div>
 
-              <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-emerald-600 transition">
+              <h3 className="text-lg font-semibold text-[#165dd3] mb-1 group-hover:text-emerald-600 transition">
                 {resource.title}
               </h3>
 

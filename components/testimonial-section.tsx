@@ -8,7 +8,7 @@ export default function TestimonialSection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 animate-fade-in-up">
           <p className="text-gray-600 text-sm mb-2 font-medium">TRUSTED BY INDUSTRY LEADERS</p>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#165dd3]">
             <span className="text-indigo-600">56% reduction</span> in new hire turnover
           </h2>
         </div>
@@ -29,7 +29,7 @@ export default function TestimonialSection() {
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full" />
             <div>
-              <p className="font-semibold text-gray-900">Rosa Phillips</p>
+              <p className="font-semibold text-[#165dd3]">Rosa Phillips</p>
               <p className="text-gray-600 text-sm">Head of Talent, TechCorp</p>
             </div>
           </div>

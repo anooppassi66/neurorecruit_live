@@ -168,7 +168,7 @@ export default function RecruiterToolPage() {
         <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-100 px-8 py-8">
           <div className="mb-6 text-center">
             <Briefcase className="h-10 w-10 mx-auto mb-2" style={{ color: BRAND }} />
-            <h1 className="text-xl font-bold text-gray-900">Recruiter Portal</h1>
+            <h1 className="text-xl font-bold text-[#165dd3]">Recruiter Portal</h1>
             <p className="text-sm text-gray-500 mt-1">Sign in to manage your job postings</p>
           </div>
 
@@ -199,7 +199,7 @@ export default function RecruiterToolPage() {
         <div className="flex items-center gap-3">
           <Briefcase className="h-6 w-6" style={{ color: BRAND }} />
           <div>
-            <p className="text-sm font-semibold text-gray-900">{recruiter.name}</p>
+            <p className="text-sm font-semibold text-[#165dd3]">{recruiter.name}</p>
             <p className="text-xs text-gray-500">{recruiter.email}</p>
           </div>
         </div>
@@ -221,7 +221,7 @@ export default function RecruiterToolPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             <div className="bg-white rounded-2xl shadow-xl w-full max-w-md px-8 py-7 mx-4">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-lg font-bold text-gray-900">Contact Details</h2>
+                <h2 className="text-lg font-bold text-[#165dd3]">Contact Details</h2>
                 <button onClick={() => setShowContact(false)}><X className="h-5 w-5 text-gray-400" /></button>
               </div>
               <form onSubmit={handleSaveContact} className="space-y-4">
@@ -257,7 +257,7 @@ export default function RecruiterToolPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg px-8 py-7 mx-4 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-lg font-bold text-gray-900">{editingJob ? "Edit Job Post" : "New Job Post"}</h2>
+                <h2 className="text-lg font-bold text-[#165dd3]">{editingJob ? "Edit Job Post" : "New Job Post"}</h2>
                 <button onClick={() => setShowJobForm(false)}><X className="h-5 w-5 text-gray-400" /></button>
               </div>
               <form onSubmit={handleSaveJob} className="space-y-4">
@@ -308,7 +308,7 @@ export default function RecruiterToolPage() {
         {/* Jobs list header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Your Job Posts</h2>
+            <h2 className="text-xl font-bold text-[#165dd3]">Your Job Posts</h2>
             <p className="text-sm text-gray-500 mt-0.5">{jobs.length} post{jobs.length !== 1 ? "s" : ""}</p>
           </div>
           <Button onClick={openNewJob} className="gap-1.5 font-semibold" style={{ background: BRAND_BTN }}>
@@ -328,7 +328,7 @@ export default function RecruiterToolPage() {
               <div key={job._id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-gray-900 text-base">{job.title}</h3>
+                    <h3 className="font-semibold text-[#165dd3] text-base">{job.title}</h3>
                     <p className="text-sm text-gray-500 mt-1 line-clamp-2">{job.description.replace(/<[^>]+>/g, " ").trim()}</p>
                     {job.skills.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 mt-3">

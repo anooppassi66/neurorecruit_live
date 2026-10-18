@@ -11,7 +11,7 @@ export default function CTASection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
   
         <div className="text-center mb-12 animate-fade-in-up">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#165dd3] mb-4">
             Get Started <span className="text-indigo-600">Today</span>
           </h2>
           <p className="text-lg text-gray-600 font-medium">Choose your role and start your journey</p>
