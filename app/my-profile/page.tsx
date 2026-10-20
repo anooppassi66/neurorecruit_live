@@ -321,7 +321,7 @@ export default function MyProfilePage() {
                   <span>Passionate product designer with 8+ years of experience creating user-centred digital experiences.</span>
                 </div>
                 <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm text-indigo-100/90">
-                  <ActionDialogButton
+                  {/* <ActionDialogButton
                     label="LinkedIn"
                     title="LinkedIn profile"
                     description="Static example link for your LinkedIn profile."
@@ -333,7 +333,7 @@ export default function MyProfilePage() {
                     <p className="text-sm text-slate-700">
                       linkedin.com/in/sarahjohnson
                     </p>
-                  </ActionDialogButton>
+                  </ActionDialogButton> */}
                   <ActionDialogButton
                     label="Portfolio"
                     title="Portfolio website"

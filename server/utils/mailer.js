@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Hostinger SMTP — port 465 (SSL) or 587 (STARTTLS)
 const transporter = nodemailer.createTransport({
