@@ -356,34 +356,17 @@ export default function Home() {
       <section className="relative z-10 mx-auto max-w-6xl px-6 pt-24 pb-16 text-center"
         style={{ animation: "fade-in-up 0.8s ease-out" }}>
 
-        <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full mb-10 text-sm font-medium cursor-default"
-          style={{
-            background: "rgba(124,58,237,0.06)", border: "1px solid rgba(124,58,237,0.15)",
-            color: "#165dd3", backdropFilter: "blur(8px)",
-          }}>
-          <SparklesIcon className="w-4 h-4" />
-          AI-Powered Talent Intelligence
+        <div className="relative w-full rounded-3xl overflow-hidden shadow-xl aspect-video mb-10">
+          <video
+            ref={videoRef}
+            className="absolute inset-0 w-full h-full object-cover"
+            src="/assets/hero-recruitment.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
         </div>
-
-        <h1 className="text-5xl md:text-6xl lg:text-[5.25rem] font-bold leading-[1.08] tracking-tight mb-7" style={{ color: "#0F172A" }}>
-          Connect Talent with
-          <br />
-          <span style={{
-            background: "#165dd3",
-            backgroundSize: "200% 200%",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            animation: "gradient-shift 6s ease infinite",
-            color: "#fff"
-          }}>
-            Opportunities
-          </span>
-        </h1>
-
-        <p className="text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed" style={{ color: "#64748B" }}>
-          Paste a job description and watch AI extract requirements, scan your resume database,
-          and rank the best candidates — all in under 3 seconds.
-        </p>
 
         <div className="flex items-center justify-center gap-4 flex-wrap mb-8">
           <Link href="https://recruit.neurocruit.ai/signup"
@@ -439,21 +422,6 @@ export default function Home() {
               <div className="text-sm" style={{ color: "#94A3B8" }}>{stat.label}</div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* ─── Recruitment video ─── */}
-      <section className="relative z-10 mx-auto max-w-6xl px-6 pb-28"
-        style={{ animation: "fade-in-up 0.8s ease-out 0.2s both" }}>
-        <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-video">
-          <video
-            ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover"
-            src="/assets/hero-recruitment.mp4"
-            loop
-            muted
-            playsInline
-          />
         </div>
       </section>
 

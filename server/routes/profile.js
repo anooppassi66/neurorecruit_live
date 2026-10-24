@@ -12,12 +12,10 @@ dotenv.config();
 
 const router = express.Router();
 
+// No explicit access keys: the SDK resolves credentials from the default provider chain
+// (IAM role on EC2/ECS/Lambda, or the shared AWS profile locally).
 const awsConfig = {
   region: process.env.AWS_REGION || 'us-east-1',
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-  }
 };
 
 const s3 = new S3Client(awsConfig);
