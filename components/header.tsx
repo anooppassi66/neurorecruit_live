@@ -63,7 +63,7 @@ export default function Header() {
             <Link href="/my-profile" className="text-sm font-medium text-white hover:text-blue-200 transition">
               Profile
             </Link>
-            <Link href="/my-profile#resume" className="text-sm font-medium text-white hover:text-blue-200 transition">
+            <Link href="/resume" className="text-sm font-medium text-white hover:text-blue-200 transition">
               Resume
             </Link>
             <Link href="/job-match" className="text-sm font-medium text-white hover:text-blue-200 transition">

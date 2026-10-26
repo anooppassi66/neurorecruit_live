@@ -353,7 +353,7 @@ export default function Home() {
       </nav>
 
       {/* ─── Hero ─── */}
-      <section className="relative z-10 mx-auto max-w-6xl px-6 pt-24 pb-16 text-center"
+      <section className="relative z-10 mx-auto max-w-6xl px-6 pt-8 pb-16 text-center"
         style={{ animation: "fade-in-up 0.8s ease-out" }}>
 
         <div className="relative w-full rounded-3xl overflow-hidden shadow-xl aspect-video mb-10">
