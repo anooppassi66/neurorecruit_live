@@ -310,7 +310,7 @@ export default function Home() {
 
       {/* ─── Navbar ─── */}
       <nav className="sticky top-0 z-50 mx-auto max-w-6xl" style={{ animation: "fade-in 0.6s ease-out" }}>
-        <div className="mx-4 mt-4 flex items-center justify-between rounded-2xl px-6 py-3.5"
+        <div className="mx-4 flex items-center justify-between rounded-2xl px-6"
           style={{
             background: "#165dd3",
             backdropFilter: "blur(20px)",
@@ -375,16 +375,17 @@ export default function Home() {
               background: "#155dfc",
               boxShadow: "0 4px 20px rgba(124,58,237,0.3)",
             }}>
-            Start Matching Free
+            Recruiter Signup
             <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
           <Link href="/join-now"
-            className="inline-flex items-center gap-2.5 px-9 py-4 rounded-2xl text-base font-medium cursor-pointer transition-all duration-300 hover:bg-black/[0.04]"
+            className="group inline-flex items-center gap-2.5 px-9 py-4 rounded-2xl text-base font-semibold text-white cursor-pointer transition-all duration-300 hover:shadow-[0_0_40px_rgba(124,58,237,0.4)] hover:-translate-y-0.5"
             style={{
-              color: "#475569", background: "rgba(0,0,0,0.02)",
-              border: "1px solid rgba(0,0,0,0.08)", backdropFilter: "blur(8px)",
+              background: "#155dfc",
+              boxShadow: "0 4px 20px rgba(124,58,237,0.3)",
             }}>
-            NewHire Login
+            NewHire Signup
+            <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
           {/* <Link href="https://recruit.neurocruit.ai/signup"
             className="inline-flex items-center gap-2.5 px-9 py-4 rounded-2xl text-base font-medium cursor-pointer transition-all duration-300 hover:bg-amber-50"
