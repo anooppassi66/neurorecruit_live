@@ -328,7 +328,7 @@ export default function Home() {
             <Link href="https://recruit.neurocruit.ai/signup"
               className="px-5 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 hover:opacity-80"
               style={{ color: "#fff" }}>
-              Recruiters Login
+              RECRUITER LOGIN
             </Link>
             {/* <Link href="https://recruit.neurocruit.ai/signup"
               className="px-5 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 hover:opacity-80"
@@ -338,7 +338,7 @@ export default function Home() {
             <Link href="/join-now"
               className="px-5 py-2 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 hover:opacity-80"
               style={{ color: "#fff" }}>
-              NewHire Login
+              JOBSEEKER LOGIN
             </Link>
             {/* <Link href="/join-now"
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white cursor-pointer transition-all duration-300 hover:shadow-[0_0_30px_rgba(124,58,237,0.4)]"
@@ -384,7 +384,7 @@ export default function Home() {
               background: "#155dfc",
               boxShadow: "0 4px 20px rgba(124,58,237,0.3)",
             }}>
-            NewHire Signup
+            Jobseeker signup
             <ArrowRightIcon className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
           {/* <Link href="https://recruit.neurocruit.ai/signup"
